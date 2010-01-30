@@ -140,7 +140,7 @@ namespace ggj2010
                     if (objVel.Y > 0)
                     {
                         if (objRectY.Bottom() > currRect.Top()
-                            && objRectX.Left() < currRect.Right() && objRectX.Right() > currRect.Left())
+                            && objRectY.Left() < currRect.Right() && objRectY.Right() > currRect.Left())
                         {
                             objVel.Y = currRect.Top() - objInitRect.Bottom();
                             if (objVel.Y < 0)
@@ -150,7 +150,7 @@ namespace ggj2010
                     else
                     {
                         if (objRectY.Top() < currRect.Bottom()
-                            && objRectX.Left() < currRect.Right() && objRectX.Right() > currRect.Left())
+                            && objRectY.Left() < currRect.Right() && objRectY.Right() > currRect.Left())
                         {
                             objVel.Y = currRect.Bottom() - objInitRect.Top();
                             if (objVel.Y > 0)

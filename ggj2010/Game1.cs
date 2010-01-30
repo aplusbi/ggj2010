@@ -92,6 +92,9 @@ namespace ggj2010
         /// </summary>
         protected override void Initialize()
         {
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.ApplyChanges();
             // TODO: Add your initialization logic here
             viewport = GraphicsDevice.Viewport;
             spritePosition = new Vector2(viewport.Width / 2, viewport.Height / 2);
@@ -119,10 +122,10 @@ namespace ggj2010
             player.LoadContent(Content, "whitesquare64x64");
 
             TilePair[] tiles = {
-                new TilePair("blacksquare64x64", TileMap.Tile.TileType.NONE),
-                new TilePair("whitesquare64x64", TileMap.Tile.TileType.SOLID) };
+                new TilePair("blacksquare16x16", TileMap.Tile.TileType.NONE),
+                new TilePair("whitesquare16x16", TileMap.Tile.TileType.SOLID) };
             map.LoadTiles(Content, tiles);
-            map.LoadContent(Content, @"Content\map.txt");
+            map.LoadContent(Content, @"Content\map1.txt");
 
             players[0].LoadContent(Content, "shipanimated");
 
