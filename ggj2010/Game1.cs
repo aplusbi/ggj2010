@@ -31,11 +31,17 @@ namespace ggj2010
         TileMap map = new TileMap();
         float vibration = 0.0f;
         float vibDelta = 0.1f;
+        Player[] players;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            players = new Player[4];
+            players[0] = new Player();
+            players[1] = new Player();
+            players[2] = new Player();
+            players[3] = new Player();
         }
 
         /// <summary>
@@ -55,7 +61,7 @@ namespace ggj2010
             base.Initialize();
             ContentManager contentManager = new ContentManager(this.Services, @"Content\");
             soundEffect = contentManager.Load<SoundEffect>(soundName);
-            soundEffect.Play();
+            //soundEffect.Play();
         }
 
         /// <summary>
@@ -76,6 +82,9 @@ namespace ggj2010
                 new TilePair("whitesquare64x64", TileMap.Tile.TileType.SOLID) };
             map.LoadTiles(Content, tiles);
             map.LoadContent(Content, @"Content\map.txt");
+
+            players[0].LoadContent(Content, "shipanimated");
+
         }
 
         /// <summary>
@@ -113,6 +122,7 @@ namespace ggj2010
             spritePosition2.X += GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.X;
             spritePosition2.Y -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.Y;
 
+            players[0].Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -127,6 +137,8 @@ namespace ggj2010
             map.Draw(spriteBatch);
             spriteBatch.Draw(spriteTexture, spritePosition, Color.White);
             spriteBatch.Draw(spriteTexture2, spritePosition2, Color.Red);
+            spriteBatch.Draw(spriteTexture2, spritePosition2, Color.Red);
+            players[0].Draw(spriteBatch);
             spriteBatch.End();
 
             // TODO: Add your drawing code here
