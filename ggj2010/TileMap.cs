@@ -13,17 +13,27 @@ namespace ggj2010
 {
     class TileMap
     {
+        class Tile
+        {
+            public enum TileType { SOLID, LADDER, NONE };
+            public TileType m_type;
+            public Texture2D m_texture;
+            public Tile(ContentManager theContent, string assetName)
+            {
+                m_texture = theContent.Load<Texture2D>(assetName);
+            }
+        }
         int[,] m_map;
         int m_width, m_height;
         int m_tileWidth, m_tileHeight;
-        Texture2D[] m_tiles;
+        Tile[] m_tiles;
         public void LoadContent(ContentManager theContent, string assetName)
         {
             FileInfo mapFile = new FileInfo(assetName);
             StreamReader stream = mapFile.OpenText();
 
             string text;
-            char[] separator = { ' ' };
+            char[] separator = { ' ', ',' };
             text = stream.ReadLine();
             if (text != null)
             {
@@ -48,14 +58,14 @@ namespace ggj2010
         public void LoadTiles(ContentManager theContent, string[] tileNames)
         {
             int i = 0;
-            m_tiles = new Texture2D[tileNames.Count()];
+            m_tiles = new Tile[tileNames.Count()];
             foreach (string file in tileNames)
             {
-                m_tiles[i] = theContent.Load<Texture2D>(file);
+                m_tiles[i] = new Tile(theContent, file);
                 ++i;
             }
-            m_tileWidth = m_tiles[0].Width;
-            m_tileHeight = m_tiles[0].Height;
+            m_tileWidth = m_tiles[0].m_texture.Width;
+            m_tileHeight = m_tiles[0].m_texture.Height;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -64,7 +74,7 @@ namespace ggj2010
                 for (int i = 0; i < m_width; ++i)
                 {
                     Vector2 pos = new Vector2(i*m_tileWidth, j * m_tileHeight);
-                    spriteBatch.Draw(m_tiles[m_map[i,j]], pos, Color.White);
+                    spriteBatch.Draw(m_tiles[m_map[i,j]].m_texture, pos, Color.White);
                 }
             }
         }

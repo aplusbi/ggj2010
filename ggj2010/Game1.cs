@@ -72,7 +72,7 @@ namespace ggj2010
 
             string[] tiles = { "blacksquare64x64", "whitesquare64x64" };
             map.LoadTiles(Content, tiles);
-            map.LoadContent(Content, @"..\..\..\Content\map.txt");
+            map.LoadContent(Content, @"Content\map.txt");
         }
 
         /// <summary>
@@ -94,8 +94,14 @@ namespace ggj2010
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
-                map.LoadContent(Content, @"..\..\..\Content\map.txt");
+            vibration -= GamePad.GetState(PlayerIndex.One).Triggers.Left;
+            vibration += GamePad.GetState(PlayerIndex.One).Triggers.Right;
+            if (vibration > 1.0f)
+                vibration = 1.0f;
+            if (vibration < 0.0f)
+                vibration = 0.0f;
+            GamePad.SetVibration(PlayerIndex.One, 1.0f - vibration, vibration);
+
 
             // TODO: Add your update logic here
             spritePosition.X += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X;
