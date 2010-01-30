@@ -25,6 +25,8 @@ namespace ggj2010
         Texture2D spriteTexture2;
         Vector2 spritePosition;
         Vector2 spritePosition2;
+        SoundEffect soundEffect;
+        string soundName = "kaboom";
         TileMap map = new TileMap();
         float vibration = 0.0f;
         float vibDelta = 0.1f;
@@ -50,6 +52,9 @@ namespace ggj2010
             spritePosition.X -= 64;
             spritePosition2.X += 64;
             base.Initialize();
+            ContentManager contentManager = new ContentManager(this.Services, @"Content\");
+            soundEffect = contentManager.Load<SoundEffect>(soundName);
+            soundEffect.Play();
         }
 
         /// <summary>
