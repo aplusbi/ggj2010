@@ -12,7 +12,7 @@ using TilePair = ggj2010.Pair<string, ggj2010.TileMap.Tile.TileType>;
 
 namespace ggj2010
 {
-    class TileMap
+    public class TileMap
     {
         public class Tile
         {
@@ -82,42 +82,80 @@ namespace ggj2010
         }
         public Vector2 Collide(ICollidable obj)
         {
-            Rectangle objInitRect = obj.GetBoundingBox();
+            floatRectangle objInitRect = obj.GetBoundingBox();
             Vector2 objVel = obj.GetVelocityVector();
-            Rectangle objRect = new Rectangle(objInitRect.X + (int)objVel.X,
-                objInitRect.Y + (int)objVel.Y, objInitRect.Width, objInitRect.Height);
+            floatRectangle objRect = new floatRectangle(objInitRect.X + objVel.X,
+                objInitRect.Y + objVel.Y, objInitRect.Width, objInitRect.Height);
+
+            if (objRect.Top() > m_tileHeight * m_height || objRect.Bottom() < 0
+                || objRect.Left() > m_tileWidth * m_width || objRect.Right() < 0)
+                return objVel;
 
             Rectangle tileRect = new Rectangle();
-            tileRect.X = objRect.X / m_tileWidth;
-            tileRect.Y = objRect.Y / m_tileHeight;
-            tileRect.Width = objRect.Width / m_tileWidth;
-            tileRect.Height = objRect.Height / m_tileHeight;
+            tileRect.X = (int)objRect.X / m_tileWidth;
+            tileRect.Y = (int)objRect.Y / m_tileHeight;
+            tileRect.Width = (int)objRect.Width / m_tileWidth;
+            tileRect.Height = (int)objRect.Height / m_tileHeight;
 
-            for(int j=tileRect.Top; j<=tileRect.Bottom; ++j)
+            if (tileRect.X < 0) tileRect.X = 0;
+            if (tileRect.Y < 0) tileRect.Y = 0;
+            if (tileRect.Right >= m_width)
+                tileRect.Width = m_width - tileRect.X - 1;
+            if (tileRect.Bottom >= m_height)
+                tileRect.Height = m_height - tileRect.Y - 1;
+
+            for (int j = tileRect.Top; j <= tileRect.Bottom; ++j)
             {
                 for (int i = tileRect.Left; i <= tileRect.Right; ++i)
                 {
-                    Rectangle currRect = new Rectangle(i * m_tileWidth, j * m_tileHeight,
+                    floatRectangle currRect = new floatRectangle(i * m_tileWidth, j * m_tileHeight,
                         m_tileWidth, m_tileHeight);
-                    SimpleCollidable tileCollidable = new SimpleCollidable(currRect, Vector2.Zero);
-                    SimpleCollidable objX = new SimpleCollidable(objInitRect, new Vector2(objVel.X, 0));
-                    SimpleCollidable objY = new SimpleCollidable(objInitRect, new Vector2(0, objVel.Y));
+                    floatRectangle objRectX = new floatRectangle(objInitRect.X + objVel.X, objInitRect.Y+1,
+                        objInitRect.Width, objInitRect.Height-2);
+                    floatRectangle objRectY = new floatRectangle(objInitRect.X+1, objInitRect.Y + objVel.Y,
+                        objInitRect.Width-2, objInitRect.Height);
 
                     if (m_tiles[m_map[i, j]].m_type == Tile.TileType.NONE)
                         continue;
-                    if(objX.WillCollide(tileCollidable))
+                    if (objVel.X > 0)
                     {
-                        if (objVel.X > 0)
-                            objVel.X = currRect.Left - objInitRect.Right;
-                        else
-                            objVel.X = currRect.Right - objInitRect.Left;
+                        if (objRectX.Right() > currRect.Left()
+                            && objRectX.Top() < currRect.Bottom() && objRectX.Bottom() > currRect.Top())
+                        {
+                            objVel.X = currRect.Left() - objInitRect.Right();
+                            if (objVel.X < 0)
+                                objVel.X = 0;
+                        }
                     }
-                    if(objY.WillCollide(tileCollidable))
+                    else
                     {
-                        if (objVel.Y > 0)
-                            objVel.Y = currRect.Top - objInitRect.Bottom;
-                        else
-                            objVel.Y = currRect.Bottom - objInitRect.Top;
+                        if (objRectX.Left() < currRect.Right()
+                            && objRectX.Top() < currRect.Bottom() && objRectX.Bottom() > currRect.Top())
+                        {
+                            objVel.X = currRect.Right() - objInitRect.Left();
+                            if (objVel.X > 0)
+                                objVel.X = 0;
+                        }
+                    }
+                    if (objVel.Y > 0)
+                    {
+                        if (objRectY.Bottom() > currRect.Top()
+                            && objRectX.Left() < currRect.Right() && objRectX.Right() > currRect.Left())
+                        {
+                            objVel.Y = currRect.Top() - objInitRect.Bottom();
+                            if (objVel.Y < 0)
+                                objVel.Y = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (objRectY.Top() < currRect.Bottom()
+                            && objRectX.Left() < currRect.Right() && objRectX.Right() > currRect.Left())
+                        {
+                            objVel.Y = currRect.Bottom() - objInitRect.Top();
+                            if (objVel.Y > 0)
+                                objVel.Y = 0;
+                        }
                     }
                 }
             }
