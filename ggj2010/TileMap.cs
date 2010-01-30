@@ -78,5 +78,46 @@ namespace ggj2010
                 }
             }
         }
+        public Vector2 Collide(ICollidable obj)
+        {
+            Rectangle objInitRect = obj.GetBoundingBox();
+            Vector2 objVel = obj.GetVelocityVector();
+            Rectangle objRect = new Rectangle(objInitRect.X + (int)objVel.X,
+                objInitRect.Y + (int)objVel.Y, objInitRect.Width, objInitRect.Height);
+
+            Rectangle tileRect = new Rectangle();
+            tileRect.X = objRect.X / m_tileWidth;
+            tileRect.Y = objRect.Y / m_tileHeight;
+            tileRect.Width = objRect.Width / m_tileWidth;
+            tileRect.Height = objRect.Height / m_tileHeight;
+
+            for(int j=tileRect.Top; j<=tileRect.Bottom; ++j)
+            {
+                for (int i = tileRect.Left; i <= tileRect.Right; ++i)
+                {
+                    Rectangle currRect = new Rectangle(i * m_tileWidth, j * m_tileHeight,
+                        m_tileWidth, m_tileHeight);
+                    SimpleCollidable tileCollidable = new SimpleCollidable(currRect, Vector2.Zero);
+                    SimpleCollidable objX = new SimpleCollidable(objInitRect, new Vector2(objVel.X, 0));
+                    SimpleCollidable objY = new SimpleCollidable(objInitRect, new Vector2(0, objVel.Y));
+
+                    if(objX.WillCollide(tileCollidable))
+                    {
+                        if (objVel.X > 0)
+                            objVel.X = currRect.Left - objInitRect.Right;
+                        else
+                            objVel.X = currRect.Right - objInitRect.Left;
+                    }
+                    if(objY.WillCollide(tileCollidable))
+                    {
+                        if (objVel.Y > 0)
+                            objVel.Y = currRect.Top - objInitRect.Bottom;
+                        else
+                            objVel.Y = currRect.Bottom - objInitRect.Top;
+                    }
+                }
+            }
+            return objVel;
+        }
     }
 }
