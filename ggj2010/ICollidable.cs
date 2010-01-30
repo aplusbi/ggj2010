@@ -9,5 +9,7 @@ namespace ggj2010
     interface ICollidable
     {
         Rectangle GetBoundingBox();
+        Vector2 GetVelocityVector();
+        bool Colliding(ICollidable other);
     }
 }
