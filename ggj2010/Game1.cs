@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
+using TilePair = ggj2010.Pair<string, ggj2010.TileMap.Tile.TileType>;
 
 namespace ggj2010
 {
@@ -70,7 +71,9 @@ namespace ggj2010
             spriteTexture = Content.Load<Texture2D>("blacksquare64x64");
             spriteTexture2 = Content.Load<Texture2D>("whitesquare64x64");
 
-            string[] tiles = { "blacksquare64x64", "whitesquare64x64" };
+            TilePair[] tiles = {
+                new TilePair("blacksquare64x64", TileMap.Tile.TileType.NONE),
+                new TilePair("whitesquare64x64", TileMap.Tile.TileType.SOLID) };
             map.LoadTiles(Content, tiles);
             map.LoadContent(Content, @"Content\map.txt");
         }

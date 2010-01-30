@@ -7,20 +7,22 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
+using TilePair = ggj2010.Pair<string, ggj2010.TileMap.Tile.TileType>;
 
 
 namespace ggj2010
 {
     class TileMap
     {
-        class Tile
+        public class Tile
         {
             public enum TileType { SOLID, LADDER, NONE };
             public TileType m_type;
             public Texture2D m_texture;
-            public Tile(ContentManager theContent, string assetName)
+            public Tile(ContentManager theContent, string assetName, TileType type)
             {
                 m_texture = theContent.Load<Texture2D>(assetName);
+                m_type = type;
             }
         }
         int[,] m_map;
@@ -55,13 +57,13 @@ namespace ggj2010
             }
             stream.Close();
         }
-        public void LoadTiles(ContentManager theContent, string[] tileNames)
+        public void LoadTiles(ContentManager theContent, TilePair[] tileNames)
         {
             int i = 0;
             m_tiles = new Tile[tileNames.Count()];
-            foreach (string file in tileNames)
+            foreach (TilePair file in tileNames)
             {
-                m_tiles[i] = new Tile(theContent, file);
+                m_tiles[i] = new Tile(theContent, file.first, file.second);
                 ++i;
             }
             m_tileWidth = m_tiles[0].m_texture.Width;
@@ -101,6 +103,8 @@ namespace ggj2010
                     SimpleCollidable objX = new SimpleCollidable(objInitRect, new Vector2(objVel.X, 0));
                     SimpleCollidable objY = new SimpleCollidable(objInitRect, new Vector2(0, objVel.Y));
 
+                    if (m_tiles[m_map[i, j]].m_type == Tile.TileType.NONE)
+                        continue;
                     if(objX.WillCollide(tileCollidable))
                     {
                         if (objVel.X > 0)
