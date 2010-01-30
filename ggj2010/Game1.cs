@@ -25,6 +25,9 @@ namespace ggj2010
         Texture2D spriteTexture2;
         Vector2 spritePosition;
         Vector2 spritePosition2;
+        TileMap map = new TileMap();
+        float vibration = 0.0f;
+        float vibDelta = 0.1f;
 
         public Game1()
         {
@@ -61,6 +64,10 @@ namespace ggj2010
             // TODO: use this.Content to load your game content here
             spriteTexture = Content.Load<Texture2D>("blacksquare64x64");
             spriteTexture2 = Content.Load<Texture2D>("whitesquare64x64");
+
+            string[] tiles = { "blacksquare64x64", "whitesquare64x64" };
+            map.LoadTiles(Content, tiles);
+            map.LoadContent(Content, @"..\..\..\Content\map.txt");
         }
 
         /// <summary>
@@ -82,6 +89,8 @@ namespace ggj2010
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed)
+                map.LoadContent(Content, @"..\..\..\Content\map.txt");
 
             // TODO: Add your update logic here
             spritePosition.X += GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X;
@@ -101,6 +110,7 @@ namespace ggj2010
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            map.Draw(spriteBatch);
             spriteBatch.Draw(spriteTexture, spritePosition, Color.White);
             spriteBatch.Draw(spriteTexture2, spritePosition2, Color.Red);
             spriteBatch.End();
