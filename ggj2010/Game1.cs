@@ -203,7 +203,7 @@ namespace ggj2010
                                 {
                                     if (p.Shot())
                                     {
-                                        m_score[(int)p.m_index]--;
+                                        //m_score[(int)p.m_index]--;
                                         if (b.GetTeam() == p.GetTeam())
                                             m_score[(int)b.m_player]--;
                                         else
