@@ -22,9 +22,13 @@ namespace ggj2010
 
         Vector2 m_vel;
         Vector2 m_dir = new Vector2(0, 0);
+        Vector2 m_bulletDir = new Vector2(1.0f, 0);
+        double m_bulletWait = 0.0f;
         Vector2 m_pos;
         Vector2 m_gravity = new Vector2(0.0f, 120.0f);
         double m_speed;
+        LinkedList<Bullet> m_bullets = new LinkedList<Bullet>();
+        ContentManager m_content;
         bool flipped = false;
 
         public Player()
@@ -41,9 +45,10 @@ namespace ggj2010
 
         public void LoadContent(ContentManager theContent, string assetName, int squareSize)
         {
+            m_content = theContent;
             m_sprite.LoadContent(theContent, assetName, squareSize);
             m_texture = theContent.Load<Texture2D>(assetName);
-            m_pos = new Vector2(5, 650);
+            m_pos = new Vector2(16, 650);
             m_rect = new floatRectangle();
             m_rect.X = 0;
             m_rect.Y = 0;
@@ -94,13 +99,52 @@ namespace ggj2010
             m_pos.X += m_vec.X;
             m_pos.Y += m_vec.Y;
 
+            if (m_vec.X > 0)
+            {
+                m_bulletDir.X = 1.0f;
+                flipped = false;
+            }
+            else if (m_vec.X < 0)
+            {
+                m_bulletDir.X = -1.0f;
+                flipped = true;
+            }
+
             m_sprite.Update(gameTime, m_pos +  new Vector2(8,0));
             m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
+            // bullets!
+            m_bulletWait -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (m_bulletWait < 0) m_bulletWait = 0;
+            if(GamePad.GetState((PlayerIndex)index).Buttons.A == ButtonState.Pressed
+                && m_bullets.Count() < 5 && m_bulletWait <= 0)
+            {
+                m_bulletWait = 0.5f;
+                 m_bullets.AddLast(new Bullet(m_content,
+                    new floatRectangle(m_pos.X + 8, m_pos.Y + 32, 8, 8), 
+                    m_bulletDir * 320.0f, 
+                    (PlayerIndex)index));
+            }
+            LinkedList<Bullet> garbage = new LinkedList<Bullet>();
+            foreach (Bullet b in m_bullets)
+            {
+                if (!b.IsValid())
+                    garbage.AddLast(b);
+                else
+                    b.Update(gameTime, map);
+            }
+            foreach (Bullet b in garbage)
+            {
+                m_bullets.Remove(b);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             m_sprite.Draw(spriteBatch, flipped);
+            foreach (Bullet b in m_bullets)
+            {
+                b.Draw(spriteBatch);
+            }
         }
     }
 }

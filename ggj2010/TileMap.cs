@@ -121,6 +121,12 @@ namespace ggj2010
         }
         public Vector2 Collide(ICollidable obj)
         {
+            bool dummy;
+            return Collide(obj, out dummy);
+        }
+        public Vector2 Collide(ICollidable obj, out bool hit)
+        {
+            hit = false;
             floatRectangle objInitRect = obj.GetBoundingBox();
             Vector2 objVel = obj.GetVelocityVector();
             floatRectangle objRect = new floatRectangle(objInitRect.X + objVel.X,
@@ -164,6 +170,7 @@ namespace ggj2010
                         if (objRectX.Right() > currRect.Left()
                             && objRectX.Top() < currRect.Bottom() && objRectX.Bottom() > currRect.Top())
                         {
+                            hit = true;
                             objVel.X = currRect.Left() - objInitRect.Right();
                             if (objVel.X < 0)
                                 objVel.X = 0;
@@ -174,6 +181,7 @@ namespace ggj2010
                         if (objRectX.Left() < currRect.Right()
                             && objRectX.Top() < currRect.Bottom() && objRectX.Bottom() > currRect.Top())
                         {
+                            hit = true;
                             objVel.X = currRect.Right() - objInitRect.Left();
                             if (objVel.X > 0)
                                 objVel.X = 0;
@@ -184,6 +192,7 @@ namespace ggj2010
                         if (objRectY.Bottom() > currRect.Top()
                             && objRectY.Left() < currRect.Right() && objRectY.Right() > currRect.Left())
                         {
+                            hit = true;
                             objVel.Y = currRect.Top() - objInitRect.Bottom();
                             if (objVel.Y < 0)
                                 objVel.Y = 0;
@@ -191,6 +200,7 @@ namespace ggj2010
                     }
                     //else
                     //{
+                    //    hit = true;
                     //    if (objRectY.Top() < currRect.Bottom()
                     //        && objRectY.Left() < currRect.Right() && objRectY.Right() > currRect.Left())
                     //    {

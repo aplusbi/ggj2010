@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="AnimatedTexture.cs" />
     <Compile Include="Animation.cs" />
+    <Compile Include="Bullet.cs" />
     <Compile Include="ICollidable.cs" />
     <Compile Include="Pair.cs" />
     <Compile Include="Player.cs" />
