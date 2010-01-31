@@ -136,6 +136,11 @@ namespace ggj2010
             tileRect.Width = (int)objRect.Width / m_tileWidth;
             tileRect.Height = (int)objRect.Height / m_tileHeight;
 
+            floatRectangle objRectX = new floatRectangle(objInitRect.X + objVel.X, objInitRect.Y + 1,
+                objInitRect.Width, objInitRect.Height - 1);
+            floatRectangle objRectY = new floatRectangle(objInitRect.X + 1, objInitRect.Y + objVel.Y,
+                objInitRect.Width - 1, objInitRect.Height);
+
             if (tileRect.X < 0) tileRect.X = 0;
             if (tileRect.Y < 0) tileRect.Y = 0;
             if (tileRect.Right >= m_width)
@@ -153,10 +158,6 @@ namespace ggj2010
 
                     floatRectangle currRect = new floatRectangle(i * m_tileWidth, j * m_tileHeight,
                         m_tileWidth, m_tileHeight);
-                    floatRectangle objRectX = new floatRectangle(objInitRect.X + objVel.X, objInitRect.Y+1,
-                        objInitRect.Width, objInitRect.Height-2);
-                    floatRectangle objRectY = new floatRectangle(objInitRect.X+1, objInitRect.Y + objVel.Y,
-                        objInitRect.Width-2, objInitRect.Height);
 
                     if (objVel.X > 0)
                     {

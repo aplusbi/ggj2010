@@ -26,13 +26,13 @@ namespace ggj2010
         public void LoadContent(ContentManager theContent, string assetName)
         {
             m_texture = theContent.Load<Texture2D>(assetName);
-            m_pos = new Vector2(5, 5);
+            m_pos = new Vector2(50, 5);
             m_rect = new floatRectangle();
             m_rect.X = 0;
             m_rect.Y = 0;
             m_rect.Width = m_texture.Width;
             m_rect.Height = m_texture.Height;
-            m_speed = 240.0f;        }
+            m_speed = 120.0;        }
         public void Update(GameTime gameTime, TileMap map)
         {
             m_rect.X = m_pos.X;
@@ -45,7 +45,7 @@ namespace ggj2010
             if (onLadder)
             {
                 this.m_dir.Y = -GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
-                if (m_dir.Y != 0)
+                if (Math.Abs(m_dir.Y) > 0.2f)
                     m_pos.X = (float)ladder_x;
             }
             else

@@ -74,14 +74,26 @@ namespace ggj2010
             if (onLadder)
             {
                 this.m_dir.Y = -GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
-                if (m_dir.Y != 0)
+                if (Math.Abs(m_dir.Y) > 0.5f)
                     m_pos.X = (float)ladder_x;
             }
             else
                 m_dir.Y = 0;
             if (m_dir.LengthSquared() > 0)
                 m_dir.Normalize();
-            m_vec.X = m_dir.X * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
+
+            // stuck wall hack
+            bool unstuck = false;
+            if (!onLadder)
+            {
+                float grav = m_gravity.Y * (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                m_vec = m_gravity * (float)(gameTime.ElapsedGameTime.TotalSeconds);
+                m_vec = map.Collide(this);
+                if (m_vec.Y == grav)
+                    unstuck = true;
+            }
+            if(!unstuck)
+                m_vec.X = m_dir.X * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
             m_vec.Y = m_dir.Y * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
             if (!onLadder)
             {
@@ -89,8 +101,6 @@ namespace ggj2010
             }
             m_vec = map.Collide(this);
 
-            if (m_vec.Y > 0)
-                m_vec.X = 0;
             m_pos.X += m_vec.X;
             m_pos.Y += m_vec.Y;
 
