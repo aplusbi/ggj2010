@@ -20,14 +20,17 @@ namespace ggj2010
         private bool m_valid = true;
         public PlayerIndex m_player;
         private Vector2 m_vel;
-        public Bullet(ContentManager theContent, floatRectangle r, Vector2 v, PlayerIndex player)
+        private int m_team;
+        public Bullet(ContentManager theContent, floatRectangle r, Vector2 v, PlayerIndex player, int team)
         {
             m_player = player;
             m_rect = r;
             m_vel = v;
+            m_team = team;
             m_vec = new Vector2();
             m_sprite = theContent.Load<Texture2D>("bullet");
         }
+        public int GetTeam() { return m_team; }
         public void Update(GameTime gameTime, TileMap map)
         {
             bool hit;

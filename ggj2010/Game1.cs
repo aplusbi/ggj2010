@@ -28,6 +28,7 @@ namespace ggj2010
         float vibration = 0.0f;
         //Test player = new Test();
         Player[] players;
+        int[] m_score = {0, 0};
 
         AudioEngine audioEngine;
         WaveBank waveBank;
@@ -38,9 +39,10 @@ namespace ggj2010
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             players = new Player[4];
+            Random rng = new Random();
             for (int i = 0; i < 4; i++)
             {
-                players[i] = new Player();
+                players[i] = new Player(rng);
             }
         }
 
@@ -89,7 +91,7 @@ namespace ggj2010
             map.LoadContent(Content, @"Content\map2.txt");
 
             PlayerIndex[] indices = { PlayerIndex.One, PlayerIndex.Two, PlayerIndex.Three, PlayerIndex.Four };
-            Shuffle(indices);
+            Shuffle(indices, 4);
             for (int i = 0; i < 4; i++)
             {
                 players[i].LoadContent(Content, "character_frames", 64, i, indices[i]);
@@ -128,8 +130,14 @@ namespace ggj2010
                     {
                         if (b.m_player != p.m_index && b.Colliding(p))
                         {
+                            if (p.Shot())
+                            {
+                                if (b.GetTeam() == p.GetTeam())
+                                    m_score[b.GetTeam()]--;
+                                else
+                                    m_score[b.GetTeam()]++;
+                            }
                             b.Remove();
-                            p.Die();
                         }
                     }
                 }
@@ -157,9 +165,8 @@ namespace ggj2010
 
             base.Draw(gameTime);
         }
-        public void Shuffle<T>(T[] array)
+        public void Shuffle<T>(T[] array, int n)
         {
-            int n = array.Count();
             Random rng = new Random();
             while (n > 1)
             {

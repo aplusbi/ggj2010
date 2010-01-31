@@ -38,8 +38,11 @@ namespace ggj2010
         bool flipped = false;
         Animation.AnimationType m_atype = Animation.AnimationType.IDLING;
         public PlayerIndex m_index;
+        private int m_team;
+        private int m_health;
+        public double m_vibrate = 1.0f;
 
-        public Player()
+        public Player(Random rng)
         {
             m_sprite = new Sprite();
             m_sprite.AddAnimation(Animation.AnimationType.DYING, 1, 0.1f, true);
@@ -49,6 +52,12 @@ namespace ggj2010
             m_sprite.AddAnimation(Animation.AnimationType.PANTING, 4, 0.3f, true);
             m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, 2, 0.1f, false);
             m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, 2, 0.1f, true);
+            m_team = rng.Next(2);
+            m_health = 3;
+        }
+        public int GetTeam()
+        {
+            return m_team;
         }
 
         public void LoadContent(ContentManager theContent, string assetName, int squareSize, int pnum, PlayerIndex index)
@@ -65,6 +74,9 @@ namespace ggj2010
             m_yspeed = 120.0f;
             m_index = index;
             m_pos =  m_origin[pnum];
+
+            if(m_team == 0)
+                GamePad.SetVibration(m_index, 0.5f, 0.0f);
         }
         public void Respawn()
         {
@@ -74,6 +86,9 @@ namespace ggj2010
 
         public void Update(GameTime gameTime, TileMap map)
         {
+            m_vibrate -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (m_vibrate < 0)
+                GamePad.SetVibration(m_index, 0, 0);
             m_rect.X = m_pos.X;
             m_rect.Y = m_pos.Y;
             int ladder_x = 0, ladder_y = 0;
@@ -177,7 +192,7 @@ namespace ggj2010
                  m_bullets.AddLast(new Bullet(m_content,
                     new floatRectangle(m_pos.X + 8, m_pos.Y + 32, 8, 8), 
                     m_bulletDir * 320.0f, 
-                    m_index));
+                    m_index, m_team));
             }
             LinkedList<Bullet> garbage = new LinkedList<Bullet>();
             foreach (Bullet b in m_bullets)
@@ -217,9 +232,19 @@ namespace ggj2010
         {
             return m_bullets;
         }
+        public bool Shot()
+        {
+            if (--m_health == 0)
+            {
+                Die();
+                return true;
+            }
+            return false;
+        }
         public void Die()
         {
             Respawn();
+            m_health = 3;
             //m_atype = Animation.AnimationType.DYING;
         }
     }
