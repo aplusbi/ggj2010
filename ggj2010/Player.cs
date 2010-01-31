@@ -75,6 +75,14 @@ namespace ggj2010
             m_index = index;
             m_pos =  m_origin[pnum];
 
+            switch (m_index)
+            {
+                case PlayerIndex.One: m_sprite.m_color = new Color(176, 59, 205); break;
+                case PlayerIndex.Two: m_sprite.m_color = new Color(180, 180, 180); break;
+                case PlayerIndex.Three: m_sprite.m_color = new Color(247, 213, 23); break;
+                case PlayerIndex.Four: m_sprite.m_color = new Color(238, 16, 16); break;
+            }
+
             if(m_team == 0)
                 GamePad.SetVibration(m_index, 0.0f, 0.25f);
         }

@@ -40,7 +40,8 @@ namespace ggj2010
         Animation.AnimationType currentAnimation;
 	    int currentFrame;
 	    float totalTime;
-	    bool dyingAnimationIsDone;
+        bool dyingAnimationIsDone;
+        public Color m_color;
 
         public Sprite()
 	    {
@@ -94,12 +95,12 @@ namespace ggj2010
 
             if (flip)
             {
-                spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, Color.White, 0.0f, origin,
+                spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, m_color, 0.0f, origin,
                     1.0f, SpriteEffects.FlipHorizontally, 0.0f);
             }
             else
             {
-                spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, Color.White, 0.0f, origin,
+                spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, m_color, 0.0f, origin,
                     1.0f, 0, 0.0f);
             }
         }
