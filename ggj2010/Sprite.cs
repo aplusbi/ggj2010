@@ -46,7 +46,7 @@ namespace ggj2010
 	    {
             SpriteTexture = new AnimatedTexture(Vector2.Zero, Rotation, Scale, Depth);
 	        dyingAnimationIsDone = false;
-            currentAnimation = Animation.AnimationType.IDLING;
+            currentAnimation = Animation.AnimationType.NONE;
 	    }
 
         public void Initialize()

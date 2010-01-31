@@ -36,7 +36,7 @@ namespace ggj2010
         LinkedList<Bullet> m_bullets = new LinkedList<Bullet>();
         ContentManager m_content;
         bool flipped = false;
-        Animation.AnimationType m_atype = Animation.AnimationType.IDLING;
+        Animation.AnimationType m_atype = Animation.AnimationType.NONE;
         public PlayerIndex m_index;
         private int m_team;
         private int m_health;
