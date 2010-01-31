@@ -68,10 +68,10 @@ namespace ggj2010
         {
             Color fontColor = new Color(79, 111, 130);
             Vector2 FontPos = new Vector2(512, 384);
-            string output1 = m_score[1].ToString();
-            string output2 = m_score[2].ToString();
-            string output3 = m_score[3].ToString();
-            string output4 = m_score[0].ToString();
+            string output1 = m_score[0].ToString();
+            string output2 = m_score[1].ToString();
+            string output3 = m_score[2].ToString();
+            string output4 = m_score[3].ToString();
             Vector2 outputPos1 = new Vector2(800, 130);
             Vector2 outputPos2 = new Vector2(800, 280);
             Vector2 outputPos3 = new Vector2(800, 440);

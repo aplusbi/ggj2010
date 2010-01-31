@@ -103,11 +103,11 @@ namespace ggj2010
             map.LoadTiles(Content, tiles);
             map.LoadContent(Content, m_levels[level]);
 
-            PlayerIndex[] indices = { PlayerIndex.One, PlayerIndex.Two, PlayerIndex.Three, PlayerIndex.Four };
+            int[] indices = { 0, 1, 2, 3 };
             Shuffle(indices, 4);
             for (int i = 0; i < 4; i++)
             {
-                players[i].LoadContent(Content, "character_frames", 64, i, indices[i]);
+                players[i].LoadContent(Content, "character_frames", 64, indices[i], (PlayerIndex)i);
             }
             m_leveltime = new Timer(60);
             m_leveltime.LoadContent(Content, "Arial");
