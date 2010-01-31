@@ -53,7 +53,7 @@ namespace ggj2010
 //            m_sprite.AddAnimation("idle", 0);
 //            m_sprite.AddAnimation("idle", 0);
             m_texture = theContent.Load<Texture2D>(assetName);
-            m_pos = new Vector2(5, 5);
+            m_pos = new Vector2(5, 650);
             m_rect = new floatRectangle();
             m_rect.X = 0;
             m_rect.Y = 0;
@@ -74,7 +74,7 @@ namespace ggj2010
             if (onLadder)
             {
                 this.m_dir.Y = -GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
-                if (Math.Abs(m_dir.Y) > 0.5f)
+                if (Math.Abs(m_dir.Y) > Math.Abs(m_dir.X))
                     m_pos.X = (float)ladder_x;
             }
             else
@@ -104,7 +104,7 @@ namespace ggj2010
             m_pos.X += m_vec.X;
             m_pos.Y += m_vec.Y;
 
-            m_sprite.Update(gameTime, m_pos);
+            m_sprite.Update(gameTime, m_pos +  new Vector2(8,0));
 
             m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
 
