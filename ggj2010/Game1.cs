@@ -132,7 +132,7 @@ namespace ggj2010
             switch(m_state)
             {
                 case State.TITLE:
-                    if (m_delaytime > 5)
+                    if (m_delaytime > 1)
                     {
                         m_state = State.INTRO;
                         m_delaytime = 0.0;
@@ -140,7 +140,7 @@ namespace ggj2010
                     m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case State.INTRO:
-                    if ((m_delaytime > 10) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
+                    if ((m_delaytime > 1) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
@@ -151,7 +151,7 @@ namespace ggj2010
                     m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case State.RULES:
-                    if (m_delaytime > 8)
+                    if (m_delaytime > 3)
                     {
                         //string output = "Press A to continue";
                         //Vector2 outputPos = new Vector2(330, 630);
@@ -163,7 +163,7 @@ namespace ggj2010
                     m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case State.SCORE:
-                    if ((m_delaytime > 10) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
+                    if ((m_delaytime > 5) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
