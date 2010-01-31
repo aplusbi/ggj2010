@@ -27,8 +27,7 @@ namespace ggj2010
 
         public float Rotation, Scale, Depth;
         public Vector2 Origin;
-        public AnimatedTexture(Vector2 origin, float rotation, 
-            float scale, float depth)
+        public AnimatedTexture(Vector2 origin, float rotation, float scale, float depth)
         {
             this.Origin = origin;
             this.Rotation = rotation;

@@ -21,11 +21,25 @@ namespace ggj2010
         public Player()
         {
             m_sprite = new Sprite();
+            m_sprite.AddAnimation(Animation.AnimationType.IDLING, 4, 0.3f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.RUNNING, 5, 0.1f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, 8, 0.1f, true);
+            //m_sprite.AddAnimation(Animation.AnimationType.IDLING, idleFrames, idleRate, true);
+            //m_sprite.AddAnimation(Animation.AnimationType.RUNNING, movingFrames, movingRate, true);
+            //m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, movingFrames, movingRate, true);
+            //m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, shootingFrames, shootingRate, false);
+            //m_sprite.AddAnimation(Animation.AnimationType.DYING, dyingFrames, dyingRate, false);
+//            m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, spawningFrames, spawningRate, false);
         }
 
-        public void LoadContent(ContentManager theContent, string assetName)
+        public void LoadContent(ContentManager theContent, string assetName, int squareSize)
         {
-            m_sprite.LoadContent(theContent, assetName);
+            m_sprite.LoadContent(theContent, assetName, squareSize);
+//            m_sprite.AddAnimation("idle", 0);
+//            m_sprite.AddAnimation("idle", 0);
+//            m_sprite.AddAnimation("idle", 0);
+//            m_sprite.AddAnimation("idle", 0);
+//            m_sprite.AddAnimation("idle", 0);
         }
 
         public void Update(GameTime gameTime)

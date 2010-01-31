@@ -33,7 +33,7 @@ namespace ggj2010
             m_rect.Height = m_texture.Height;
             m_dir = new Vector2(0, 1);
             m_dir.Normalize();
-            m_speed = 80.0f;
+            m_speed = 320.0f;
         }
         public void Update(GameTime gameTime, TileMap map)
         {
@@ -78,10 +78,14 @@ namespace ggj2010
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             players = new Player[4];
-            players[0] = new Player();
-            players[1] = new Player();
-            players[2] = new Player();
-            players[3] = new Player();
+            for (int i = 0; i < 4; i++)
+            {
+                players[i] = new Player();
+            }
+//            players[0] = new Player();
+//            players[1] = new Player();
+//            players[2] = new Player();
+//            players[3] = new Player();
         }
 
         /// <summary>
@@ -127,7 +131,10 @@ namespace ggj2010
             map.LoadTiles(Content, tiles);
             map.LoadContent(Content, @"Content\map1.txt");
 
-            players[0].LoadContent(Content, "shipanimated");
+            players[0].LoadContent(Content, "character_frames", 64);
+            players[1].LoadContent(Content, "character_frames", 64);
+            players[2].LoadContent(Content, "character_frames", 64);
+            players[3].LoadContent(Content, "character_frames", 64);
 
         }
 
@@ -167,7 +174,8 @@ namespace ggj2010
             spritePosition2.X += GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.X;
             spritePosition2.Y -= GamePad.GetState(PlayerIndex.One).ThumbSticks.Right.Y;
 
-            players[0].Update(gameTime);            player.Update(gameTime, this.map);
+            players[0].Update(gameTime);
+            player.Update(gameTime, this.map);
             base.Update(gameTime);
         }
 

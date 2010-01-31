@@ -88,6 +88,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="character_frames.png">
+      <Name>character_frames</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="map1.txt">
       <Name>map1</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
