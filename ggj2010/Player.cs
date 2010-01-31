@@ -82,6 +82,7 @@ namespace ggj2010
         {
             m_atype = Animation.AnimationType.IDLING;
             m_pos = m_origin[new Random().Next(4)];
+            m_health = 3;
         }
 
         public void Update(GameTime gameTime, TileMap map)
@@ -244,7 +245,6 @@ namespace ggj2010
         public void Die()
         {
             Respawn();
-            m_health = 3;
             //m_atype = Animation.AnimationType.DYING;
         }
     }
