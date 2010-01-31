@@ -36,7 +36,6 @@ namespace ggj2010
                 currentFrame = (int)Math.Ceiling(currentTime / secondsPerFrame);
                 if (currentFrame > lastFrame)
                 {
-                    //(loopingType == false) ? (currentFrame = 0) : (currentFrame = 1);
                     if (loopingType == false)
                     {
                         currentFrame = 0;

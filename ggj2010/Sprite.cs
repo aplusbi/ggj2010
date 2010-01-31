@@ -76,24 +76,6 @@ namespace ggj2010
             int X1 = (currentFrame-1)*offset;
             int Y1 = (int)currentAnimation*offset;
             subRectFrame = new Rectangle(X1, Y1, offset, offset);
-
-            // go back to idle animation after SHOOTING animation is done
-            if (currentAnimation == Animation.AnimationType.SHOOTING
-                && AnimationsList[(int)Animation.AnimationType.SHOOTING].GetCurrentFrame() == 0)
-                { 
-                    PlayAnimation(Animation.AnimationType.IDLING); 
-                }
-
-            // go back to idle animation after SPAWNING animation is done
-            if (currentAnimation == Animation.AnimationType.SPAWNING
-                && AnimationsList[(int)Animation.AnimationType.SPAWNING].GetCurrentFrame() == 0)
-                { PlayAnimation(Animation.AnimationType.IDLING); }
-
-            // if dying animation completed, trip flag
-            if (currentAnimation == Animation.AnimationType.DYING && currentFrame == 0)
-                { 
-                    dyingAnimationIsDone = true; 
-                }
         }
 
         public void Draw(SpriteBatch spriteBatch, bool flip)
@@ -143,9 +125,14 @@ namespace ggj2010
             }
         }
 
-        public bool IsDyingAnimationDone()
+        public bool IsCurrentAnimationDone()
         {
-            return dyingAnimationIsDone;
+            if (AnimationsList[(int)currentAnimation].GetCurrentFrame() == 0)
+            {
+                return true;
+            }
+            else return false;
+            //return dyingAnimationIsDone;
         }
 
         //public bool IsAnimationLooping()

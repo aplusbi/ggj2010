@@ -36,11 +36,11 @@ namespace ggj2010
         {
             m_sprite = new Sprite();
             m_sprite.AddAnimation(Animation.AnimationType.DYING, 1, 0.1f, true);
-            m_sprite.AddAnimation(Animation.AnimationType.RUNNING, 5, 0.1f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.RUNNING, 5, 0.05f, true);
             m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, 8, 0.1f, true);
             m_sprite.AddAnimation(Animation.AnimationType.IDLING, 1, 0.1f, true);
             m_sprite.AddAnimation(Animation.AnimationType.PANTING, 4, 0.3f, true);
-            m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, 2, 0.1f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, 2, 0.1f, false);
             m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, 2, 0.1f, true);
         }
 
@@ -69,7 +69,7 @@ namespace ggj2010
             this.m_dir.X = GamePad.GetState((PlayerIndex)index).ThumbSticks.Left.X;
             if (onLadder)
             {
-                this.m_dir.Y = -GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
+                this.m_dir.Y = -GamePad.GetState((PlayerIndex)index).ThumbSticks.Left.Y;
                 if (Math.Abs(m_dir.Y) > Math.Abs(m_dir.X))
                     m_pos.X = (float)ladder_x;
             }
@@ -95,6 +95,10 @@ namespace ggj2010
             {
                 m_vec += m_gravity * (float)(gameTime.ElapsedGameTime.TotalSeconds);
             }
+            else
+            {
+                m_atype = Animation.AnimationType.CLIMBING;
+            }
             m_vec = map.Collide(this);
 
             m_pos.X += m_vec.X;
@@ -102,21 +106,52 @@ namespace ggj2010
 
             if (m_vec.X > 0)
             {
-                m_bulletDir.X = 1.0f;
+                m_bulletDir.X = 2.0f;
                 flipped = false;
-                m_atype = Animation.AnimationType.RUNNING;
             }
             else if (m_vec.X < 0)
             {
-                m_bulletDir.X = -1.0f;
+                m_bulletDir.X = -2.0f;
                 flipped = true;
-                m_atype = Animation.AnimationType.RUNNING;
             }
-            else
+
+            if (m_atype != Animation.AnimationType.SHOOTING)
+            {
+                if (Math.Abs(m_vec.X) > 0.20f && Math.Abs(m_vec.Y) < 0.20f)
+                {
+                    m_atype = Animation.AnimationType.RUNNING;
+                }
+                if (Math.Abs(m_vec.Y) > 0.20f && Math.Abs(m_vec.X) < 0.20f && onLadder == true)
+                {
+                    m_atype = Animation.AnimationType.CLIMBING;
+                }
+                if (Math.Abs(m_vec.X) < 0.20f && Math.Abs(m_vec.Y) < 0.20f)
+                {
+                    m_atype = Animation.AnimationType.IDLING;
+                }
+            }
+
+            // go back to idle animation after SHOOTING animation is done
+            if (m_atype == Animation.AnimationType.SHOOTING && m_sprite.IsCurrentAnimationDone() == true)
+            {
                 m_atype = Animation.AnimationType.IDLING;
+            }
+
+            // go back to idle animation after SPAWNING animation is done
+            if (m_atype == Animation.AnimationType.SPAWNING && m_sprite.IsCurrentAnimationDone() == true)
+            { 
+                m_atype = Animation.AnimationType.IDLING; 
+            }
+
+            // if dying animation completed, trip flag
+            if (m_atype == Animation.AnimationType.DYING && m_sprite.IsCurrentAnimationDone() == true)
+            {
+                //dyingAnimationIsDone = true;
+            }
 
             m_sprite.Update(gameTime, m_pos +  new Vector2(8,0));
-            m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
+            //m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
+
             // bullets!
             m_bulletWait -= gameTime.ElapsedGameTime.TotalSeconds;
             if (m_bulletWait < 0) m_bulletWait = 0;
@@ -141,6 +176,18 @@ namespace ggj2010
             foreach (Bullet b in garbage)
             {
                 m_bullets.Remove(b);
+            }
+
+            switch (m_atype)
+            {
+                case Animation.AnimationType.DYING: break;
+                case Animation.AnimationType.RUNNING: m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); break;
+                case Animation.AnimationType.CLIMBING: m_sprite.PlayAnimation(Animation.AnimationType.CLIMBING); break;
+                case Animation.AnimationType.IDLING: m_sprite.PlayAnimation(Animation.AnimationType.IDLING); break;
+                case Animation.AnimationType.PANTING: m_sprite.PlayAnimation(Animation.AnimationType.PANTING); break;
+                case Animation.AnimationType.SHOOTING: m_sprite.PlayAnimation(Animation.AnimationType.SHOOTING); break;
+                case Animation.AnimationType.SPAWNING: break;
+                default: break;
             }
         }
 
