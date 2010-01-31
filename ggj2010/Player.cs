@@ -57,7 +57,7 @@ namespace ggj2010
             m_rect = new floatRectangle();
             m_rect.X = 0;
             m_rect.Y = 0;
-            m_rect.Width = 64;
+            m_rect.Width = 16;
             m_rect.Height = 64;
             m_speed = 240.0f;
         }

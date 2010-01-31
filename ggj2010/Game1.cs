@@ -14,6 +14,7 @@ using TilePair = ggj2010.Pair<string, ggj2010.TileMap.Tile.TileType>;
 
 namespace ggj2010
 {
+/*
     public class Test : SimpleCollidable
     {
         Texture2D m_texture;
@@ -69,6 +70,7 @@ namespace ggj2010
             spriteBatch.Draw(m_texture, m_pos, Color.Green);
         }
     }
+ */
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -81,7 +83,7 @@ namespace ggj2010
         string soundName = "kaboom";
         TileMap map = new TileMap();
         float vibration = 0.0f;
-        Test player = new Test();
+        //Test player = new Test();
         Player[] players;
 
         public Game1()
@@ -129,7 +131,7 @@ namespace ggj2010
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            player.LoadContent(Content, "whitesquare16x16");
+            //player.LoadContent(Content, "whitesquare16x16");
 
             TilePair[] tiles = {
                 new TilePair("blacksquare16x16", TileMap.Tile.TileType.NONE),
@@ -177,7 +179,7 @@ namespace ggj2010
 
             // TODO: Add your update logic here
             players[0].Update(gameTime, this.map);
-            player.Update(gameTime, this.map);
+            //player.Update(gameTime, this.map);
             base.Update(gameTime);
         }
 
@@ -191,7 +193,7 @@ namespace ggj2010
             spriteBatch.Begin();
             map.Draw(spriteBatch);
             players[0].Draw(spriteBatch);
-            player.Draw(spriteBatch);
+            //player.Draw(spriteBatch);
             spriteBatch.End();
 
             // TODO: Add your drawing code here

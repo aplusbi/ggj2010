@@ -77,6 +77,7 @@ namespace ggj2010
             shipPos = new Vector2(300, 300);
             SpriteTexture.Play();
             spriteSheet = theContent.Load<Texture2D>(assetName);
+            origin = new Vector2(squareSize / 2, 0);
         }
 
         public void Update(GameTime gameTime, Vector2 m_pos)
@@ -129,7 +130,7 @@ namespace ggj2010
             //    Rotation, Origin, Scale, SpriteEffects.None, Depth);
 
             //           SpriteTexture.DrawFrame(spriteBatch, shipPos);
-            origin = new Vector2(0.0f, 0.0f);
+            //origin = new Vector2(0.0f, 0.0f);
             //spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, Color.White);
             spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, Color.White, 0.0f, origin, 1.0f, SpriteEffects.FlipHorizontally, 0.0f);
         }
