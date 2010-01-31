@@ -31,7 +31,7 @@ namespace ggj2010
         Player[] players;
         Screens screens;
         int[] m_score = {0, 0, 0, 0};
-        string[] m_levels = {@"Content\map1.txt", @"Content\map2.txt", @"Content\map3.txt"};
+        string[] m_levels = {@"Content\map1.txt", @"Content\map2.txt", @"Content\map3.txt", @"Content\map4.txt"};
         int m_currentlevel = 0;
         Random rng = new Random();
         bool spacebar = false;
@@ -129,6 +129,20 @@ namespace ggj2010
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            // Allows the game to exit
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+                || GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
+                || GamePad.GetState(PlayerIndex.Three).Buttons.Back == ButtonState.Pressed
+                || GamePad.GetState(PlayerIndex.Four).Buttons.Back == ButtonState.Pressed)
+                this.Exit();
+            else if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed
+                || GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed
+                || GamePad.GetState(PlayerIndex.Three).Buttons.Start == ButtonState.Pressed
+                || GamePad.GetState(PlayerIndex.Four).Buttons.Start == ButtonState.Pressed)
+            {
+                m_delaytime = 0;
+                m_state = State.TITLE;
+            }
             switch(m_state)
             {
                 case State.TITLE:
@@ -180,9 +194,6 @@ namespace ggj2010
                     m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case State.GAME:
-                    // Allows the game to exit
-                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                        this.Exit();
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                         spacebar = true;
                     if (spacebar && Keyboard.GetState().IsKeyUp(Keys.Space) || m_leveltime.GetTime() < 0)

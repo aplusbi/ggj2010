@@ -5,9 +5,9 @@ Content\whitesquare16x16.xnb
 Content\blacksquare16x16.xnb
 Content\character_frames.xnb
 Content\laddersquare16x16.xnb
+Content\bullet.xnb
 Content\james-bond.xnb
 Content\kaboom.xnb
-Content\bullet.xnb
 Content\Arial.xnb
 Content\screen_individual_score.xnb
 Content\screen_vibrate.xnb
@@ -36,3 +36,4 @@ Content\map.txt
 Content\map1.txt
 Content\map2.txt
 Content\map3.txt
+Content\map4.txt
