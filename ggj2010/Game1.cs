@@ -176,7 +176,7 @@ namespace ggj2010
 
 
             // TODO: Add your update logic here
-            players[0].Update(gameTime);
+            players[0].Update(gameTime, this.map);
             player.Update(gameTime, this.map);
             base.Update(gameTime);
         }

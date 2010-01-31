@@ -79,9 +79,11 @@ namespace ggj2010
             spriteSheet = theContent.Load<Texture2D>(assetName);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Vector2 m_pos)
         {
-            m_position += m_velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //m_position += m_velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            shipPos = m_pos;
 
             // update currently running animation
             //totalTime += fTime;

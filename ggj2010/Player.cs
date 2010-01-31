@@ -14,9 +14,17 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace ggj2010
 {
-    class Player
+    class Player : SimpleCollidable
     {
         private Sprite m_sprite;
+
+        Texture2D m_texture;
+
+        Vector2 m_vel;
+        Vector2 m_dir = new Vector2(0, 0);
+        Vector2 m_pos;
+        Vector2 m_gravity = new Vector2(0.0f, 120.0f);
+        double m_speed;
 
         public Player()
         {
@@ -44,11 +52,49 @@ namespace ggj2010
 //            m_sprite.AddAnimation("idle", 0);
 //            m_sprite.AddAnimation("idle", 0);
 //            m_sprite.AddAnimation("idle", 0);
+            m_texture = theContent.Load<Texture2D>(assetName);
+            m_pos = new Vector2(5, 5);
+            m_rect = new floatRectangle();
+            m_rect.X = 0;
+            m_rect.Y = 0;
+            m_rect.Width = m_texture.Width;
+            m_rect.Height = m_texture.Height;
+            m_speed = 240.0f;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, TileMap map)
         {
-            m_sprite.Update(gameTime);
+            m_rect.X = m_pos.X;
+            m_rect.Y = m_pos.Y;
+            int ladder_x = 0, ladder_y = 0;
+
+            bool onLadder = map.OnLadder(this, out ladder_x, out ladder_y);
+
+            this.m_dir.X = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X;
+            if (onLadder)
+            {
+                this.m_dir.Y = -GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
+                if (m_dir.Y != 0)
+                    m_pos.X = (float)ladder_x;
+            }
+            else
+                m_dir.Y = 0;
+            if (m_dir.LengthSquared() > 0)
+                m_dir.Normalize();
+            m_vec.X = m_dir.X * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
+            m_vec.Y = m_dir.Y * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
+            if (!onLadder)
+            {
+                m_vec += m_gravity * (float)(gameTime.ElapsedGameTime.TotalSeconds);
+            }
+            m_vec = map.Collide(this);
+
+            if (m_vec.Y > 0)
+                m_vec.X = 0;
+            m_pos.X += m_vec.X;
+            m_pos.Y += m_vec.Y;
+
+            m_sprite.Update(gameTime, m_pos);
 
             m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
 
