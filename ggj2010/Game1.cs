@@ -28,6 +28,7 @@ namespace ggj2010
         float vibration = 0.0f;
         //Test player = new Test();
         Player[] players;
+        Screens screens;
         int[] m_score = {0, 0, 0, 0};
         string[] m_levels = {@"Content\map1.txt", @"Content\map2.txt"};
         int m_currentlevel = 0;
@@ -42,6 +43,7 @@ namespace ggj2010
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            screens = new Screens();
         }
 
         /// <summary>
@@ -58,16 +60,16 @@ namespace ggj2010
             // TODO: Add your initialization logic here
             viewport = GraphicsDevice.Viewport;
 
-            audioEngine = new AudioEngine(@"Content/Audio/GGJ_2010.xgs");
-            waveBank = new WaveBank(audioEngine, @"Content/Audio/Wave Bank.xwb");
-            soundBank = new SoundBank(audioEngine, @"Content/Audio/Sound Bank.xsb");
+            //audioEngine = new AudioEngine(@"Content/Audio/Win/GGJ_2010.xgs");
+            //waveBank = new WaveBank(audioEngine, @"Content/Audio/Win/Wave Bank.xwb");
+            //soundBank = new SoundBank(audioEngine, @"Content/Audio/Win/Sound Bank.xsb");
 
             base.Initialize();
 
             ContentManager contentManager = new ContentManager(this.Services, @"Content\");
             soundEffect = contentManager.Load<SoundEffect>(soundName);
             //soundEffect.Play();
-            soundBank.PlayCue("test_cue"); 
+            //soundBank.PlayCue("test_cue"); 
         }
 
         /// <summary>
@@ -97,6 +99,7 @@ namespace ggj2010
             map = new TileMap();
             map.LoadTiles(Content, tiles);
             map.LoadContent(Content, m_levels[level]);
+            screens.LoadContent(Content);
 
             PlayerIndex[] indices = { PlayerIndex.One, PlayerIndex.Two, PlayerIndex.Three, PlayerIndex.Four };
             Shuffle(indices, 4);
@@ -161,6 +164,7 @@ namespace ggj2010
                     }
                 }
             }
+            screens.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -178,6 +182,7 @@ namespace ggj2010
                 players[i].Draw(spriteBatch);
             }
             //player.Draw(spriteBatch);
+            screens.Draw(spriteBatch);
             spriteBatch.End();
 
             // TODO: Add your drawing code here

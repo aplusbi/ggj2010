@@ -78,11 +78,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\GGJ_2010.xap">
-      <Name>GGJ_2010</Name>
-      <Importer>XactImporter</Importer>
-      <Processor>XactProcessor</Processor>
-    </Compile>
     <None Include="map1.txt">
       <Name>map1</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -111,6 +106,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arial.spritefont">
+      <Name>Arial</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+    <Compile Include="Audio\GGJ_2010.xap">
+      <Name>GGJ_2010</Name>
+      <Importer>XactImporter</Importer>
+      <Processor>XactProcessor</Processor>
+    </Compile>
     <None Include="map2.txt">
       <Name>map2</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
