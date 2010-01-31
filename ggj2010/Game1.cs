@@ -19,8 +19,8 @@ namespace ggj2010
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        enum State { INTRO, RULES, GAME, SCORE };
-        State m_state = State.INTRO;
+        public enum State { INTRO, RULES, GAME, SCORE, TITLE };
+        State m_state = State.TITLE;
         GraphicsDeviceManager graphics;
         Viewport viewport;
         SpriteBatch spriteBatch;
@@ -36,6 +36,7 @@ namespace ggj2010
         Random rng = new Random();
         bool spacebar = false;
         Timer m_leveltime;
+        double m_delaytime;
 
         AudioEngine audioEngine;
         WaveBank waveBank;
@@ -46,6 +47,7 @@ namespace ggj2010
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             screens = new Screens();
+            m_delaytime = 0.0;
         }
 
         /// <summary>
@@ -82,9 +84,9 @@ namespace ggj2010
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            screens.LoadContent(Content);
+            LoadLevel(m_currentlevel);
             // TODO: use this.Content to load your game content here
-
         }
         public void LoadLevel(int level)
         {
@@ -100,7 +102,6 @@ namespace ggj2010
             map = new TileMap();
             map.LoadTiles(Content, tiles);
             map.LoadContent(Content, m_levels[level]);
-            screens.LoadContent(Content);
 
             PlayerIndex[] indices = { PlayerIndex.One, PlayerIndex.Two, PlayerIndex.Three, PlayerIndex.Four };
             Shuffle(indices, 4);
@@ -130,9 +131,47 @@ namespace ggj2010
         {
             switch(m_state)
             {
+                case State.TITLE:
+                    if (m_delaytime > 5)
+                    {
+                        m_state = State.INTRO;
+                        m_delaytime = 0.0;
+                    }
+                    m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
+                    break;
                 case State.INTRO:
-                    m_state = State.GAME;
-                    LoadLevel(m_currentlevel);
+                    if ((m_delaytime > 10) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
+                    {
+                        m_state = State.RULES;
+                        m_delaytime = 0.0;
+                    }
+                    m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
+                    break;
+                case State.RULES:
+                    if (m_delaytime > 8)
+                    {
+                        //string output = "Press A to continue";
+                        //Vector2 outputPos = new Vector2(330, 630);
+                        //screens.DrawText(spriteBatch, output, outputPos, 1.0f);
+                        m_state = State.GAME;
+                        m_delaytime = 0.0;
+                        LoadLevel(m_currentlevel);
+                    }
+                    m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
+                    break;
+                case State.SCORE:
+                    if ((m_delaytime > 10) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
+                    {
+                        m_state = State.INTRO;
+                        m_delaytime = 0.0;
+                    }
+                    m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case State.GAME:
                     // Allows the game to exit
@@ -145,8 +184,8 @@ namespace ggj2010
                         spacebar = false;
                         if (++m_currentlevel >= m_levels.Count())
                             m_currentlevel = 0;
-                        LoadLevel(m_currentlevel);
-                        
+                        m_state = State.SCORE;
+                        //LoadLevel(m_currentlevel); 
                     }
                     m_leveltime.Update(gameTime);
 
@@ -177,7 +216,7 @@ namespace ggj2010
                     }
                     break;
             }
-            screens.Update(gameTime);
+            screens.Update(gameTime, m_state);
             base.Update(gameTime);
         }
 
@@ -196,7 +235,7 @@ namespace ggj2010
                 players[i].Draw(spriteBatch);
             }
             //player.Draw(spriteBatch);
-            screens.Draw(spriteBatch);
+            screens.Draw(spriteBatch, m_score);
             spriteBatch.End();
 
             // TODO: Add your drawing code here

@@ -118,7 +118,7 @@ namespace ggj2010
                 if (m_vec.Y == grav)
                     unstuck = true;
             }
-            if(!unstuck)
+            if(!unstuck && m_atype != Animation.AnimationType.SHOOTING)
                 m_vec.X = m_dir.X * (float)(m_xspeed * gameTime.ElapsedGameTime.TotalSeconds);
             m_vec.Y = m_dir.Y * (float)(m_yspeed * gameTime.ElapsedGameTime.TotalSeconds);
             if (!onLadder)
@@ -127,7 +127,8 @@ namespace ggj2010
             }
             else
             {
-                m_atype = Animation.AnimationType.CLIMBING;
+                if (Math.Abs(m_vec.Y) < 0.20f) m_atype = Animation.AnimationType.IDLING;
+                else m_atype = Animation.AnimationType.CLIMBING;
             }
             m_vec = map.Collide(this);
 
