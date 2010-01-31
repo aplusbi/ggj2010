@@ -85,7 +85,7 @@ namespace ggj2010
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             screens.LoadContent(Content);
-            LoadLevel(m_currentlevel);
+            //LoadLevel(m_currentlevel);
             // TODO: use this.Content to load your game content here
         }
         public void LoadLevel(int level)
@@ -228,11 +228,14 @@ namespace ggj2010
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-            map.Draw(spriteBatch);
-            m_leveltime.Draw(spriteBatch);
-            for (int i = 0; i < 4; i++)
+            if (m_state == State.GAME)
             {
-                players[i].Draw(spriteBatch);
+                map.Draw(spriteBatch);
+                m_leveltime.Draw(spriteBatch);
+                for (int i = 0; i < 4; i++)
+                {
+                    players[i].Draw(spriteBatch);
+                }
             }
             //player.Draw(spriteBatch);
             screens.Draw(spriteBatch, m_score);
