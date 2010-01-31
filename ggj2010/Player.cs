@@ -21,15 +21,19 @@ namespace ggj2010
         public Player()
         {
             m_sprite = new Sprite();
-            m_sprite.AddAnimation(Animation.AnimationType.IDLING, 4, 0.3f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.DYING, 1, 0.1f, true);
             m_sprite.AddAnimation(Animation.AnimationType.RUNNING, 5, 0.1f, true);
             m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, 8, 0.1f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.IDLING, 1, 0.1f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.PANTING, 4, 0.3f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, 2, 0.1f, true);
+
             //m_sprite.AddAnimation(Animation.AnimationType.IDLING, idleFrames, idleRate, true);
             //m_sprite.AddAnimation(Animation.AnimationType.RUNNING, movingFrames, movingRate, true);
             //m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, movingFrames, movingRate, true);
             //m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, shootingFrames, shootingRate, false);
+            //m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, spawningFrames, spawningRate, false);
             //m_sprite.AddAnimation(Animation.AnimationType.DYING, dyingFrames, dyingRate, false);
-//            m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, spawningFrames, spawningRate, false);
         }
 
         public void LoadContent(ContentManager theContent, string assetName, int squareSize)
@@ -45,6 +49,9 @@ namespace ggj2010
         public void Update(GameTime gameTime)
         {
             m_sprite.Update(gameTime);
+
+            m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
+
         }
 
         public void Draw(SpriteBatch spriteBatch)

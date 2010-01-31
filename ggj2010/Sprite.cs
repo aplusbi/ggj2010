@@ -34,6 +34,7 @@ namespace ggj2010
         private Vector2 shipPos;
         private const int Frames = 4;
         private const int FramesPerSec = 2;
+        private Vector2 origin;
 
         public int offset = 16;
 
@@ -59,8 +60,8 @@ namespace ggj2010
 	        //this->SetCenter(center);
 	        //sf::IntRect subRect(0, 0, offset, offset);
 	        //this->SetSubRect(subRect);
-	        //dyingAnimationIsDone = false;
-            PlayAnimation(Animation.AnimationType.IDLING); // start in "idling animation" state
+	        dyingAnimationIsDone = false;
+//            currentAnimation = Animation.AnimationType.RUNNING;
 	    }
 
         public void Initialize()
@@ -91,41 +92,44 @@ namespace ggj2010
             currentFrame = AnimationsList[(int)currentAnimation].UpdateAnimation(elapsed);
             int X1 = (currentFrame-1)*offset;
             int Y1 = (int)currentAnimation*offset;
-            int X2 = currentFrame*offset;
-            int Y2 = (int)(currentAnimation+1)*offset;
+//            int X2 = currentFrame*offset;
+//            int Y2 = (int)(currentAnimation+1)*offset;
 //            this->SetSubRect(subRectFrame);
 //            Rectangle sourcerect = new Rectangle(FrameWidth * frame, 0, FrameWidth, myTexture.Height);
-            Rectangle subRectFrame = new Rectangle(X1, Y1, X2, Y2);
+            subRectFrame = new Rectangle(X1, Y1, offset, offset);
+//            subRectFrame = new Rectangle(0, 0, 64, 64);
 
             // go back to idle animation after SHOOTING animation is done
-            if (currentAnimation == Animation.AnimationType.SHOOTING
-                && AnimationsList[(int)Animation.AnimationType.SHOOTING].GetCurrentFrame() == 0)
-                { 
-                    PlayAnimation(Animation.AnimationType.IDLING); 
-                }
+            //if (currentAnimation == Animation.AnimationType.SHOOTING
+            //    && AnimationsList[(int)Animation.AnimationType.SHOOTING].GetCurrentFrame() == 0)
+            //    { 
+            //        PlayAnimation(Animation.AnimationType.IDLING); 
+            //    }
 
-            // go back to idle animation after SPAWNING animation is done
-            if (currentAnimation == Animation.AnimationType.SPAWNING
-                && AnimationsList[(int)Animation.AnimationType.SPAWNING].GetCurrentFrame() == 0)
-                { PlayAnimation(Animation.AnimationType.IDLING); }
+            //// go back to idle animation after SPAWNING animation is done
+            //if (currentAnimation == Animation.AnimationType.SPAWNING
+            //    && AnimationsList[(int)Animation.AnimationType.SPAWNING].GetCurrentFrame() == 0)
+            //    { PlayAnimation(Animation.AnimationType.IDLING); }
 
-            // if dying animation completed, trip flag
-            if (currentAnimation == Animation.AnimationType.DYING && currentFrame == 0)
-                { 
-                    dyingAnimationIsDone = true; 
-                }
+            //// if dying animation completed, trip flag
+            //if (currentAnimation == Animation.AnimationType.DYING && currentFrame == 0)
+            //    { 
+            //        dyingAnimationIsDone = true; 
+            //    }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
  //           spriteBatch.Draw(m_texture, m_position, m_rect, Color.White, m_angle, Vector2.Zero, m_scale, SpriteEffects.None, 0);
-            SpriteTexture.DrawFrame(spriteBatch, shipPos);
             //spriteBatch.Draw(m_tiles[m_map[i, j]].m_texture, pos, Color.White);
 
             //spriteBatch.Draw(myTexture, shipPos, subRectFrame, Color.White,
             //    Rotation, Origin, Scale, SpriteEffects.None, Depth);
-            spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, Color.White);
 
+            //           SpriteTexture.DrawFrame(spriteBatch, shipPos);
+            origin = new Vector2(0.0f, 0.0f);
+            //spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, Color.White);
+            spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, Color.White, 0.0f, origin, 1.0f, SpriteEffects.FlipHorizontally, 0.0f);
         }
 
         public void AddAnimation(Animation.AnimationType animationName, int numFrames, float numSecondsPerFrame, bool isLooping)
@@ -155,8 +159,8 @@ namespace ggj2010
         {
             // if character is dying, can't change to new animation
             // don't restart animation if it is currently playing
-            if (currentAnimation != Animation.AnimationType.DYING 
-                && currentAnimation != animationToPlay)
+//            if (currentAnimation != Animation.AnimationType.DYING && currentAnimation != animationToPlay)
+            if (currentAnimation != animationToPlay)
             {
                 // reset all animations to frame 0 prior to starting new animation
                 //for (itAnim = Animations.begin(); itAnim != Animations.end(); itAnim++)
@@ -171,20 +175,19 @@ namespace ggj2010
                 // trigger animation to play, by specifying enum AnimationType
                 currentAnimation = animationToPlay;
                 //Animations.at(Animation).PlayAnimation();
-                AnimationsList[(int)Animation.AnimationType.SHOOTING].PlayAnimation();
+                AnimationsList[(int)currentAnimation].PlayAnimation();
             }
         }
 
-        public bool IsDyingAnimationDone()
-        {
-            return dyingAnimationIsDone;
-        }
+        //public bool IsDyingAnimationDone()
+        //{
+        //    return dyingAnimationIsDone;
+        //}
 
-        public bool IsAnimationLooping()
-        {
-            return false;
-//            return Animations.at(currentAnimation).IsAnimationLooping();
-        }
+        //public bool IsAnimationLooping()
+        //{
+        //    return AnimationsList[(int)currentAnimation].IsAnimationLooping();
+        //}
     }
 }
 
