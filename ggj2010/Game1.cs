@@ -19,13 +19,14 @@ namespace ggj2010
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        enum State { INTRO, RULES, GAME, SCORE };
+        State m_state = State.INTRO;
         GraphicsDeviceManager graphics;
         Viewport viewport;
         SpriteBatch spriteBatch;
         SoundEffect soundEffect;
         string soundName = "kaboom";
         TileMap map;
-        float vibration = 0.0f;
         //Test player = new Test();
         Player[] players;
         Screens screens;
@@ -34,6 +35,7 @@ namespace ggj2010
         int m_currentlevel = 0;
         Random rng = new Random();
         bool spacebar = false;
+        double m_leveltime;
 
         AudioEngine audioEngine;
         WaveBank waveBank;
@@ -82,7 +84,6 @@ namespace ggj2010
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            LoadLevel(m_currentlevel);
 
         }
         public void LoadLevel(int level)
@@ -107,6 +108,7 @@ namespace ggj2010
             {
                 players[i].LoadContent(Content, "character_frames", 64, i, indices[i]);
             }
+            m_leveltime = 60;
         }
 
         /// <summary>
@@ -125,44 +127,54 @@ namespace ggj2010
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
-                spacebar = true;
-            if (spacebar && Keyboard.GetState().IsKeyUp(Keys.Space))
+            switch(m_state)
             {
-                spacebar = false;
-                if (++m_currentlevel >= m_levels.Count())
-                    m_currentlevel = 0;
-                LoadLevel(m_currentlevel);
-                
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                players[i].Update(gameTime, this.map);
-
-                // bullet collisions
-                LinkedList<Bullet> bullets = players[i].GetBullets();
-                foreach (Bullet b in bullets)
-                {
-                    foreach (Player p in players)
+                case State.INTRO:
+                    m_state = State.GAME;
+                    LoadLevel(m_currentlevel);
+                    break;
+                case State.GAME:
+                    // Allows the game to exit
+                    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+                        this.Exit();
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                        spacebar = true;
+                    if (spacebar && Keyboard.GetState().IsKeyUp(Keys.Space) || m_leveltime < 0)
                     {
-                        if (b.m_player != p.m_index && b.Colliding(p))
+                        spacebar = false;
+                        if (++m_currentlevel >= m_levels.Count())
+                            m_currentlevel = 0;
+                        LoadLevel(m_currentlevel);
+                        
+                    }
+                    m_leveltime -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        players[i].Update(gameTime, this.map);
+
+                        // bullet collisions
+                        LinkedList<Bullet> bullets = players[i].GetBullets();
+                        foreach (Bullet b in bullets)
                         {
-                            if (p.Shot())
+                            foreach (Player p in players)
                             {
-                                m_score[(int)p.m_index]--;
-                                if (b.GetTeam() == p.GetTeam())
-                                    m_score[(int)b.m_player]--;
-                                else
-                                    m_score[(int)b.m_player]++;
+                                if (b.m_player != p.m_index && b.Colliding(p))
+                                {
+                                    if (p.Shot())
+                                    {
+                                        m_score[(int)p.m_index]--;
+                                        if (b.GetTeam() == p.GetTeam())
+                                            m_score[(int)b.m_player]--;
+                                        else
+                                            m_score[(int)b.m_player]++;
+                                    }
+                                    b.Remove();
+                                }
                             }
-                            b.Remove();
                         }
                     }
-                }
+                    break;
             }
             screens.Update(gameTime);
             base.Update(gameTime);
