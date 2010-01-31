@@ -80,6 +80,45 @@ namespace ggj2010
                 }
             }
         }
+        public bool OnLadder(ICollidable obj, out int x, out int y)
+        {
+            floatRectangle objRect = obj.GetBoundingBox();
+            Vector2 objVel = obj.GetVelocityVector();
+
+            x = 0;
+            y = 0;
+
+            if (objRect.Top() > m_tileHeight * m_height || objRect.Bottom() < 0
+                || objRect.Left() > m_tileWidth * m_width || objRect.Right() < 0)
+                return false;
+
+            Rectangle tileRect = new Rectangle();
+            tileRect.X = (int)objRect.X / m_tileWidth;
+            tileRect.Y = (int)objRect.Y / m_tileHeight;
+            tileRect.Width = (int)objRect.Width / m_tileWidth;
+            tileRect.Height = (int)objRect.Height / m_tileHeight;
+
+            if (tileRect.X < 0) tileRect.X = 0;
+            if (tileRect.Y < 0) tileRect.Y = 0;
+            if (tileRect.Right >= m_width)
+                tileRect.Width = m_width - tileRect.X - 1;
+            if (tileRect.Bottom >= m_height)
+                tileRect.Height = m_height - tileRect.Y - 1;
+
+            for (int j = tileRect.Top; j <= tileRect.Bottom; ++j)
+            {
+                for (int i = tileRect.Left; i <= tileRect.Right; ++i)
+                {
+                    if (m_tiles[m_map[i, j]].m_type == Tile.TileType.LADDER)
+                    {
+                        x = i * m_tileWidth;
+                        y = i * m_tileHeight;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         public Vector2 Collide(ICollidable obj)
         {
             floatRectangle objInitRect = obj.GetBoundingBox();
@@ -108,6 +147,10 @@ namespace ggj2010
             {
                 for (int i = tileRect.Left; i <= tileRect.Right; ++i)
                 {
+                    if (m_tiles[m_map[i, j]].m_type == Tile.TileType.NONE
+                        || m_tiles[m_map[i, j]].m_type == Tile.TileType.LADDER)
+                        continue;
+
                     floatRectangle currRect = new floatRectangle(i * m_tileWidth, j * m_tileHeight,
                         m_tileWidth, m_tileHeight);
                     floatRectangle objRectX = new floatRectangle(objInitRect.X + objVel.X, objInitRect.Y+1,
@@ -115,8 +158,6 @@ namespace ggj2010
                     floatRectangle objRectY = new floatRectangle(objInitRect.X+1, objInitRect.Y + objVel.Y,
                         objInitRect.Width-2, objInitRect.Height);
 
-                    if (m_tiles[m_map[i, j]].m_type == Tile.TileType.NONE)
-                        continue;
                     if (objVel.X > 0)
                     {
                         if (objRectX.Right() > currRect.Left()
@@ -147,16 +188,16 @@ namespace ggj2010
                                 objVel.Y = 0;
                         }
                     }
-                    else
-                    {
-                        if (objRectY.Top() < currRect.Bottom()
-                            && objRectY.Left() < currRect.Right() && objRectY.Right() > currRect.Left())
-                        {
-                            objVel.Y = currRect.Bottom() - objInitRect.Top();
-                            if (objVel.Y > 0)
-                                objVel.Y = 0;
-                        }
-                    }
+                    //else
+                    //{
+                    //    if (objRectY.Top() < currRect.Bottom()
+                    //        && objRectY.Left() < currRect.Right() && objRectY.Right() > currRect.Left())
+                    //    {
+                    //        objVel.Y = currRect.Bottom() - objInitRect.Top();
+                    //        if (objVel.Y > 0)
+                    //            objVel.Y = 0;
+                    //    }
+                    //}
                 }
             }
             return objVel;
