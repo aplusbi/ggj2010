@@ -65,6 +65,8 @@ namespace ggj2010
 
         public void Update(GameTime gameTime, Vector2 m_pos)
         {
+            if (currentAnimation == Animation.AnimationType.NONE)
+                return;
             //m_position += m_velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             shipPos = m_pos;
 

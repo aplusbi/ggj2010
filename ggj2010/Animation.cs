@@ -17,7 +17,7 @@ namespace ggj2010
         private int lastFrame;
         private bool loopingType;
 
-        public enum AnimationType { NONE, DYING, RUNNING, CLIMBING, IDLING, PANTING, SHOOTING, SPAWNING}; 
+        public enum AnimationType { DYING, RUNNING, CLIMBING, IDLING, PANTING, SHOOTING, SPAWNING, NONE }; 
 
         public Animation(int numFrames, float numSecondsPerFrame, bool isLooping)
         {
