@@ -90,6 +90,7 @@
     <Compile Include="Screens.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="TileMap.cs" />
+    <Compile Include="Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

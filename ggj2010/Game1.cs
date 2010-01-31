@@ -35,7 +35,7 @@ namespace ggj2010
         int m_currentlevel = 0;
         Random rng = new Random();
         bool spacebar = false;
-        double m_leveltime;
+        Timer m_leveltime;
 
         AudioEngine audioEngine;
         WaveBank waveBank;
@@ -108,7 +108,8 @@ namespace ggj2010
             {
                 players[i].LoadContent(Content, "character_frames", 64, i, indices[i]);
             }
-            m_leveltime = 60;
+            m_leveltime = new Timer(60);
+            m_leveltime.LoadContent(Content, "Arial");
         }
 
         /// <summary>
@@ -139,7 +140,7 @@ namespace ggj2010
                         this.Exit();
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                         spacebar = true;
-                    if (spacebar && Keyboard.GetState().IsKeyUp(Keys.Space) || m_leveltime < 0)
+                    if (spacebar && Keyboard.GetState().IsKeyUp(Keys.Space) || m_leveltime.GetTime() < 0)
                     {
                         spacebar = false;
                         if (++m_currentlevel >= m_levels.Count())
@@ -147,7 +148,7 @@ namespace ggj2010
                         LoadLevel(m_currentlevel);
                         
                     }
-                    m_leveltime -= gameTime.ElapsedGameTime.TotalSeconds;
+                    m_leveltime.Update(gameTime);
 
                     for (int i = 0; i < 4; i++)
                     {
@@ -189,6 +190,7 @@ namespace ggj2010
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             map.Draw(spriteBatch);
+            m_leveltime.Draw(spriteBatch);
             for (int i = 0; i < 4; i++)
             {
                 players[i].Draw(spriteBatch);

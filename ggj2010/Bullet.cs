@@ -51,7 +51,7 @@ namespace ggj2010
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(m_sprite, new Vector2(m_rect.X, m_rect.Y), Color.Red);
+            spriteBatch.Draw(m_sprite, new Vector2(m_rect.X, m_rect.Y), Color.White);
         }
         public void Remove()
         {
