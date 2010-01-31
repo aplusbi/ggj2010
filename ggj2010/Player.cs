@@ -25,6 +25,7 @@ namespace ggj2010
         Vector2 m_pos;
         Vector2 m_gravity = new Vector2(0.0f, 120.0f);
         double m_speed;
+        bool flipped = false;
 
         public Player()
         {
@@ -35,23 +36,12 @@ namespace ggj2010
             m_sprite.AddAnimation(Animation.AnimationType.IDLING, 1, 0.1f, true);
             m_sprite.AddAnimation(Animation.AnimationType.PANTING, 4, 0.3f, true);
             m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, 2, 0.1f, true);
-
-            //m_sprite.AddAnimation(Animation.AnimationType.IDLING, idleFrames, idleRate, true);
-            //m_sprite.AddAnimation(Animation.AnimationType.RUNNING, movingFrames, movingRate, true);
-            //m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, movingFrames, movingRate, true);
-            //m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, shootingFrames, shootingRate, false);
-            //m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, spawningFrames, spawningRate, false);
-            //m_sprite.AddAnimation(Animation.AnimationType.DYING, dyingFrames, dyingRate, false);
+            m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, 2, 0.1f, true);
         }
 
         public void LoadContent(ContentManager theContent, string assetName, int squareSize)
         {
             m_sprite.LoadContent(theContent, assetName, squareSize);
-//            m_sprite.AddAnimation("idle", 0);
-//            m_sprite.AddAnimation("idle", 0);
-//            m_sprite.AddAnimation("idle", 0);
-//            m_sprite.AddAnimation("idle", 0);
-//            m_sprite.AddAnimation("idle", 0);
             m_texture = theContent.Load<Texture2D>(assetName);
             m_pos = new Vector2(5, 650);
             m_rect = new floatRectangle();
@@ -105,21 +95,12 @@ namespace ggj2010
             m_pos.Y += m_vec.Y;
 
             m_sprite.Update(gameTime, m_pos +  new Vector2(8,0));
-
             m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            m_sprite.Draw(spriteBatch);
+            m_sprite.Draw(spriteBatch, flipped);
         }
-
-//            idle = new Animation(new Vector2(0, 116), new Vector2(21, 24), 16, 9, 0, 0, 0);
-//            up = new Animation(new Vector2(31,146), new Vector2(19,22), 0, 11, 0, 0, 2);
-//            down = new Animation(new Vector2(31,116), new Vector2(19, 22), 0, 11, 0, 0, 2);
-//            right = new Animation(new Vector2(180, 146), new Vector2(21, 22), 0, 11, 0, 0, 2);
-//            left = new Animation(new Vector2(210, 116), new Vector2(22, 22), 0, 11, 0, 0, 2);
-
     }
 }

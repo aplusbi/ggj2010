@@ -115,15 +115,16 @@ namespace ggj2010
             // TODO: Add your initialization logic here
             viewport = GraphicsDevice.Viewport;
 
-//            audioEngine = new AudioEngine("Content\\Audio\\GGJ_2010.xgs");
-//            waveBank = new WaveBank(audioEngine, "Content\\Audio\\Wave Bank.xwb");
-//            soundBank = new SoundBank(audioEngine, "Content\\Audio\\Sound Bank.xsb");
+            audioEngine = new AudioEngine(@"Content/Audio/GGJ_2010.xgs");
+            waveBank = new WaveBank(audioEngine, @"Content/Audio/Wave Bank.xwb");
+            soundBank = new SoundBank(audioEngine, @"Content/Audio/Sound Bank.xsb");
 
             base.Initialize();
 
             ContentManager contentManager = new ContentManager(this.Services, @"Content\");
             soundEffect = contentManager.Load<SoundEffect>(soundName);
             //soundEffect.Play();
+            soundBank.PlayCue("test_cue"); 
         }
 
         /// <summary>
