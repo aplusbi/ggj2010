@@ -72,10 +72,10 @@ namespace ggj2010
             string output2 = m_score[2].ToString();
             string output3 = m_score[3].ToString();
             string output4 = m_score[0].ToString();
-            Vector2 outputPos1 = new Vector2(830, 130);
-            Vector2 outputPos2 = new Vector2(830, 280);
-            Vector2 outputPos3 = new Vector2(830, 440);
-            Vector2 outputPos4 = new Vector2(830, 590);
+            Vector2 outputPos1 = new Vector2(800, 130);
+            Vector2 outputPos2 = new Vector2(800, 280);
+            Vector2 outputPos3 = new Vector2(800, 440);
+            Vector2 outputPos4 = new Vector2(800, 590);
             Vector2 FontOrigin = new Vector2(0, 0);
             spriteBatch.Draw(scoreTexture, origin, Color.White);
             spriteBatch.DrawString(Font1, output1, outputPos1, fontColor, 0, FontOrigin, 1.0f, SpriteEffects.None, 0.5f);

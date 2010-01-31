@@ -38,7 +38,7 @@ namespace ggj2010
             Vector2 FontOrigin = m_font.MeasureString(output) / 2;
             Color fontColor = new Color(79, 111, 130);
             //spriteBatch.Draw(spriteSheet, FontPos, Color.White);
-            spriteBatch.DrawString(m_font, output, FontPos, fontColor, 0, FontOrigin, 1.0f, SpriteEffects.None, 0.5f);
+            spriteBatch.DrawString(m_font, output, FontPos, fontColor, 0, FontOrigin, 0.4f, SpriteEffects.None, 0.5f);
         }
         public double GetTime()
         {

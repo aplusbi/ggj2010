@@ -132,7 +132,10 @@ namespace ggj2010
             switch(m_state)
             {
                 case State.TITLE:
-                    if (m_delaytime > 1)
+                    if ((m_delaytime > 1) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
                     {
                         m_state = State.INTRO;
                         m_delaytime = 0.0;
@@ -151,7 +154,10 @@ namespace ggj2010
                     m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case State.RULES:
-                    if (m_delaytime > 3)
+                    if ((m_delaytime > 3) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
+                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
                     {
                         //string output = "Press A to continue";
                         //Vector2 outputPos = new Vector2(330, 630);
