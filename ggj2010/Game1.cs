@@ -24,11 +24,15 @@ namespace ggj2010
         SpriteBatch spriteBatch;
         SoundEffect soundEffect;
         string soundName = "kaboom";
-        TileMap map = new TileMap();
+        TileMap map;
         float vibration = 0.0f;
         //Test player = new Test();
         Player[] players;
         int[] m_score = {0, 0};
+        string[] m_levels = {@"Content\map1.txt", @"Content\map2.txt"};
+        int m_currentlevel = 0;
+        Random rng = new Random();
+        bool spacebar = false;
 
         AudioEngine audioEngine;
         WaveBank waveBank;
@@ -38,12 +42,6 @@ namespace ggj2010
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            players = new Player[4];
-            Random rng = new Random();
-            for (int i = 0; i < 4; i++)
-            {
-                players[i] = new Player(rng);
-            }
         }
 
         /// <summary>
@@ -82,13 +80,23 @@ namespace ggj2010
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            LoadLevel(m_currentlevel);
 
+        }
+        public void LoadLevel(int level)
+        {
+            players = new Player[4];
+            for (int i = 0; i < 4; i++)
+            {
+                players[i] = new Player(rng);
+            }
             TilePair[] tiles = {
                 new TilePair("blacksquare16x16", TileMap.Tile.TileType.NONE),
                 new TilePair("whitesquare16x16", TileMap.Tile.TileType.SOLID),
                 new TilePair("laddersquare16x16", TileMap.Tile.TileType.LADDER), };
+            map = new TileMap();
             map.LoadTiles(Content, tiles);
-            map.LoadContent(Content, @"Content\map2.txt");
+            map.LoadContent(Content, m_levels[level]);
 
             PlayerIndex[] indices = { PlayerIndex.One, PlayerIndex.Two, PlayerIndex.Three, PlayerIndex.Four };
             Shuffle(indices, 4);
@@ -117,6 +125,16 @@ namespace ggj2010
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                spacebar = true;
+            if (spacebar && Keyboard.GetState().IsKeyUp(Keys.Space))
+            {
+                spacebar = false;
+                if (++m_currentlevel >= m_levels.Count())
+                    m_currentlevel = 0;
+                LoadLevel(m_currentlevel);
+                
+            }
 
             for (int i = 0; i < 4; i++)
             {
@@ -167,7 +185,6 @@ namespace ggj2010
         }
         public void Shuffle<T>(T[] array, int n)
         {
-            Random rng = new Random();
             while (n > 1)
             {
                 int k = rng.Next(n);
