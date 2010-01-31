@@ -76,7 +76,7 @@ namespace ggj2010
             m_pos =  m_origin[pnum];
 
             if(m_team == 0)
-                GamePad.SetVibration(m_index, 0.5f, 0.0f);
+                GamePad.SetVibration(m_index, 0.0f, 0.25f);
         }
         public void Respawn()
         {
