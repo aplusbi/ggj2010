@@ -28,7 +28,7 @@ namespace ggj2010
         float vibration = 0.0f;
         //Test player = new Test();
         Player[] players;
-        int[] m_score = {0, 0};
+        int[] m_score = {0, 0, 0, 0};
         string[] m_levels = {@"Content\map1.txt", @"Content\map2.txt"};
         int m_currentlevel = 0;
         Random rng = new Random();
@@ -150,10 +150,11 @@ namespace ggj2010
                         {
                             if (p.Shot())
                             {
+                                m_score[(int)p.m_index]--;
                                 if (b.GetTeam() == p.GetTeam())
-                                    m_score[b.GetTeam()]--;
+                                    m_score[(int)b.m_player]--;
                                 else
-                                    m_score[b.GetTeam()]++;
+                                    m_score[(int)b.m_player]++;
                             }
                             b.Remove();
                         }
