@@ -80,7 +80,6 @@ namespace ggj2010
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            //player.LoadContent(Content, "whitesquare16x16");
 
             TilePair[] tiles = {
                 new TilePair("blacksquare16x16", TileMap.Tile.TileType.NONE),
@@ -89,9 +88,11 @@ namespace ggj2010
             map.LoadTiles(Content, tiles);
             map.LoadContent(Content, @"Content\map2.txt");
 
+            PlayerIndex[] indices = { PlayerIndex.One, PlayerIndex.Two, PlayerIndex.Three, PlayerIndex.Four };
+            Shuffle(indices);
             for (int i = 0; i < 4; i++)
             {
-                players[i].LoadContent(Content, "character_frames", 64);
+                players[i].LoadContent(Content, "character_frames", 64, i, indices[i]);
             }
         }
 
@@ -114,19 +115,10 @@ namespace ggj2010
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Released)
-            //    vibration += 0.1f;
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Released)
-            //    vibration -= 0.1f;
-            //if (vibration > 1.0f)
-            //    vibration = 1.0f;
-            //if (vibration < 0.0f)
-            //    vibration = 0.0f;
-            //GamePad.SetVibration(PlayerIndex.One, 0.0f, vibration);
 
             for (int i = 0; i < 4; i++)
             {
-                players[i].Update(gameTime, this.map, i);
+                players[i].Update(gameTime, this.map);
 
                 // bullet collisions
                 LinkedList<Bullet> bullets = players[i].GetBullets();
@@ -134,9 +126,10 @@ namespace ggj2010
                 {
                     foreach (Player p in players)
                     {
-                        if (b.m_player != (PlayerIndex)i && b.Colliding(p))
+                        if (b.m_player != p.m_index && b.Colliding(p))
                         {
                             b.Remove();
+                            p.Die();
                         }
                     }
                 }
@@ -163,6 +156,19 @@ namespace ggj2010
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+        public void Shuffle<T>(T[] array)
+        {
+            int n = array.Count();
+            Random rng = new Random();
+            while (n > 1)
+            {
+                int k = rng.Next(n);
+                n--;
+                T temp = array[n];
+                array[n] = array[k];
+                array[k] = temp;
+            }
         }
     }
 }

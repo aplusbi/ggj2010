@@ -25,12 +25,19 @@ namespace ggj2010
         Vector2 m_bulletDir = new Vector2(1.0f, 0);
         double m_bulletWait = 0.0f;
         Vector2 m_pos;
+        Vector2[] m_origin = {
+            new Vector2(80, 686),
+            new Vector2(80, 16),
+            new Vector2(944, 686),
+            new Vector2(944, 16) };
         Vector2 m_gravity = new Vector2(0.0f, 120.0f);
-        double m_speed;
+        double m_xspeed;
+        double m_yspeed;
         LinkedList<Bullet> m_bullets = new LinkedList<Bullet>();
         ContentManager m_content;
         bool flipped = false;
         Animation.AnimationType m_atype = Animation.AnimationType.IDLING;
+        public PlayerIndex m_index;
 
         public Player()
         {
@@ -44,21 +51,28 @@ namespace ggj2010
             m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, 2, 0.1f, true);
         }
 
-        public void LoadContent(ContentManager theContent, string assetName, int squareSize)
+        public void LoadContent(ContentManager theContent, string assetName, int squareSize, int pnum, PlayerIndex index)
         {
             m_content = theContent;
             m_sprite.LoadContent(theContent, assetName, squareSize);
             m_texture = theContent.Load<Texture2D>(assetName);
-            m_pos = new Vector2(32, 686);
             m_rect = new floatRectangle();
             m_rect.X = 0;
             m_rect.Y = 0;
             m_rect.Width = 16;
             m_rect.Height = 64;
-            m_speed = 240.0f;
+            m_xspeed = 240.0f;
+            m_yspeed = 120.0f;
+            m_index = index;
+            m_pos =  m_origin[pnum];
+        }
+        public void Respawn()
+        {
+            m_atype = Animation.AnimationType.IDLING;
+            m_pos = m_origin[new Random().Next(4)];
         }
 
-        public void Update(GameTime gameTime, TileMap map, int index)
+        public void Update(GameTime gameTime, TileMap map)
         {
             m_rect.X = m_pos.X;
             m_rect.Y = m_pos.Y;
@@ -66,10 +80,10 @@ namespace ggj2010
 
             bool onLadder = map.OnLadder(this, out ladder_x, out ladder_y);
 
-            this.m_dir.X = GamePad.GetState((PlayerIndex)index).ThumbSticks.Left.X;
+            this.m_dir.X = GamePad.GetState(m_index).ThumbSticks.Left.X;
             if (onLadder)
             {
-                this.m_dir.Y = -GamePad.GetState((PlayerIndex)index).ThumbSticks.Left.Y;
+                this.m_dir.Y = -GamePad.GetState(m_index).ThumbSticks.Left.Y;
                 if (Math.Abs(m_dir.Y) > Math.Abs(m_dir.X))
                     m_pos.X = (float)ladder_x;
             }
@@ -89,8 +103,8 @@ namespace ggj2010
                     unstuck = true;
             }
             if(!unstuck)
-                m_vec.X = m_dir.X * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
-            m_vec.Y = m_dir.Y * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
+                m_vec.X = m_dir.X * (float)(m_xspeed * gameTime.ElapsedGameTime.TotalSeconds);
+            m_vec.Y = m_dir.Y * (float)(m_yspeed * gameTime.ElapsedGameTime.TotalSeconds);
             if (!onLadder)
             {
                 m_vec += m_gravity * (float)(gameTime.ElapsedGameTime.TotalSeconds);
@@ -115,7 +129,7 @@ namespace ggj2010
                 flipped = true;
             }
 
-            if (m_atype != Animation.AnimationType.SHOOTING)
+            if (m_atype != Animation.AnimationType.SHOOTING && m_atype != Animation.AnimationType.DYING)
             {
                 if (Math.Abs(m_vec.X) > 0.20f && Math.Abs(m_vec.Y) < 0.20f)
                 {
@@ -125,7 +139,7 @@ namespace ggj2010
                 {
                     m_atype = Animation.AnimationType.CLIMBING;
                 }
-                if (Math.Abs(m_vec.X) < 0.20f && Math.Abs(m_vec.Y) < 0.20f)
+                if (Math.Abs(m_vec.X) < 0.20f && !onLadder)
                 {
                     m_atype = Animation.AnimationType.IDLING;
                 }
@@ -155,7 +169,7 @@ namespace ggj2010
             // bullets!
             m_bulletWait -= gameTime.ElapsedGameTime.TotalSeconds;
             if (m_bulletWait < 0) m_bulletWait = 0;
-            if(GamePad.GetState((PlayerIndex)index).Buttons.A == ButtonState.Pressed
+            if(GamePad.GetState(m_index).Buttons.A == ButtonState.Pressed
                 && m_bullets.Count() < 5 && m_bulletWait <= 0)
             {
                 m_atype = Animation.AnimationType.SHOOTING;
@@ -163,7 +177,7 @@ namespace ggj2010
                  m_bullets.AddLast(new Bullet(m_content,
                     new floatRectangle(m_pos.X + 8, m_pos.Y + 32, 8, 8), 
                     m_bulletDir * 320.0f, 
-                    (PlayerIndex)index));
+                    m_index));
             }
             LinkedList<Bullet> garbage = new LinkedList<Bullet>();
             foreach (Bullet b in m_bullets)
@@ -202,6 +216,11 @@ namespace ggj2010
         public LinkedList<Bullet> GetBullets()
         {
             return m_bullets;
+        }
+        public void Die()
+        {
+            Respawn();
+            //m_atype = Animation.AnimationType.DYING;
         }
     }
 }
