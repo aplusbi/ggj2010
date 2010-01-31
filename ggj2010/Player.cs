@@ -30,6 +30,7 @@ namespace ggj2010
         LinkedList<Bullet> m_bullets = new LinkedList<Bullet>();
         ContentManager m_content;
         bool flipped = false;
+        Animation.AnimationType m_atype = Animation.AnimationType.IDLING;
 
         public Player()
         {
@@ -48,7 +49,7 @@ namespace ggj2010
             m_content = theContent;
             m_sprite.LoadContent(theContent, assetName, squareSize);
             m_texture = theContent.Load<Texture2D>(assetName);
-            m_pos = new Vector2(16, 650);
+            m_pos = new Vector2(32, 686);
             m_rect = new floatRectangle();
             m_rect.X = 0;
             m_rect.Y = 0;
@@ -103,12 +104,16 @@ namespace ggj2010
             {
                 m_bulletDir.X = 1.0f;
                 flipped = false;
+                m_atype = Animation.AnimationType.RUNNING;
             }
             else if (m_vec.X < 0)
             {
                 m_bulletDir.X = -1.0f;
                 flipped = true;
+                m_atype = Animation.AnimationType.RUNNING;
             }
+            else
+                m_atype = Animation.AnimationType.IDLING;
 
             m_sprite.Update(gameTime, m_pos +  new Vector2(8,0));
             m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
@@ -118,6 +123,7 @@ namespace ggj2010
             if(GamePad.GetState((PlayerIndex)index).Buttons.A == ButtonState.Pressed
                 && m_bullets.Count() < 5 && m_bulletWait <= 0)
             {
+                m_atype = Animation.AnimationType.SHOOTING;
                 m_bulletWait = 0.5f;
                  m_bullets.AddLast(new Bullet(m_content,
                     new floatRectangle(m_pos.X + 8, m_pos.Y + 32, 8, 8), 

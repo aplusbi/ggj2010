@@ -14,63 +14,6 @@ using TilePair = ggj2010.Pair<string, ggj2010.TileMap.Tile.TileType>;
 
 namespace ggj2010
 {
-/*
-    public class Test : SimpleCollidable
-    {
-        Texture2D m_texture;
-        Vector2 m_vel;
-        Vector2 m_dir = new Vector2(0, 0);
-        Vector2 m_pos;
-        Vector2 m_gravity = new Vector2(0.0f, 120.0f);
-        double m_speed;
-        public void LoadContent(ContentManager theContent, string assetName)
-        {
-            m_texture = theContent.Load<Texture2D>(assetName);
-            m_pos = new Vector2(50, 5);
-            m_rect = new floatRectangle();
-            m_rect.X = 0;
-            m_rect.Y = 0;
-            m_rect.Width = m_texture.Width;
-            m_rect.Height = m_texture.Height;
-            m_speed = 120.0;        }
-        public void Update(GameTime gameTime, TileMap map)
-        {
-            m_rect.X = m_pos.X;
-            m_rect.Y = m_pos.Y;
-            int ladder_x = 0, ladder_y = 0;
-
-            bool onLadder = map.OnLadder(this, out ladder_x, out ladder_y);
-
-            this.m_dir.X = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X;
-            if (onLadder)
-            {
-                this.m_dir.Y = -GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
-                if (Math.Abs(m_dir.Y) > 0.2f)
-                    m_pos.X = (float)ladder_x;
-            }
-            else
-                m_dir.Y = 0;
-            if(m_dir.LengthSquared() > 0)
-                m_dir.Normalize();
-            m_vec.X = m_dir.X * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
-            m_vec.Y = m_dir.Y * (float)(m_speed * gameTime.ElapsedGameTime.TotalSeconds);
-            if(!onLadder)
-            {
-                m_vec += m_gravity * (float)(gameTime.ElapsedGameTime.TotalSeconds);
-            }
-            m_vec = map.Collide(this);
-
-            if (m_vec.Y > 0)
-                m_vec.X = 0;
-            m_pos.X += m_vec.X;
-            m_pos.Y += m_vec.Y;
-        }
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(m_texture, m_pos, Color.Green);
-        }
-    }
- */
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -144,7 +87,7 @@ namespace ggj2010
                 new TilePair("whitesquare16x16", TileMap.Tile.TileType.SOLID),
                 new TilePair("laddersquare16x16", TileMap.Tile.TileType.LADDER), };
             map.LoadTiles(Content, tiles);
-            map.LoadContent(Content, @"Content\map1.txt");
+            map.LoadContent(Content, @"Content\map2.txt");
 
             for (int i = 0; i < 4; i++)
             {
