@@ -67,10 +67,6 @@
       <Name>map</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="map1.CSV">
-      <Name>map1</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Compile Include="shipanimated.dds">
       <Name>shipanimated</Name>
       <Importer>TextureImporter</Importer>
@@ -87,6 +83,19 @@
   <ItemGroup>
     <Compile Include="blacksquare16x16.png">
       <Name>blacksquare16x16</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="map1.txt">
+      <Name>map1</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="laddersquare16x16.png">
+      <Name>laddersquare16x16</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
