@@ -5,9 +5,8 @@ Content\whitesquare16x16.xnb
 Content\blacksquare16x16.xnb
 Content\character_frames.xnb
 Content\laddersquare16x16.xnb
-Content\bullet.xnb
 Content\james-bond.xnb
-Content\kaboom.xnb
+Content\bullet.xnb
 Content\Arial.xnb
 Content\screen_individual_score.xnb
 Content\screen_vibrate.xnb
@@ -31,6 +30,8 @@ Content\score_01.xnb
 Content\score_02.xnb
 Content\ui_beep_01.xnb
 Content\ui_beep_02.xnb
+Content\kaboom2.xnb
+Content\kaboom.xnb
 Content\james-bond.wma
 Content\map.txt
 Content\map1.txt

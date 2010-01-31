@@ -25,7 +25,7 @@ namespace ggj2010
         Viewport viewport;
         SpriteBatch spriteBatch;
         SoundEffect soundEffect;
-        string soundName = "kaboom";
+        string soundName = "kaboom2";
         TileMap map;
         //Test player = new Test();
         Player[] players;
@@ -208,7 +208,7 @@ namespace ggj2010
 
                     for (int i = 0; i < 4; i++)
                     {
-                        players[i].Update(gameTime, this.map);
+                        players[i].Update(gameTime, this.map, Content);
 
                         // bullet collisions
                         LinkedList<Bullet> bullets = players[i].GetBullets();

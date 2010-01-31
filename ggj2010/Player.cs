@@ -93,7 +93,7 @@ namespace ggj2010
             m_health = 3;
         }
 
-        public void Update(GameTime gameTime, TileMap map)
+        public void Update(GameTime gameTime, TileMap map, ContentManager Content)
         {
             m_vibrate -= gameTime.ElapsedGameTime.TotalSeconds;
             if (m_vibrate < 0)
@@ -188,7 +188,7 @@ namespace ggj2010
                 //dyingAnimationIsDone = true;
             }
 
-            m_sprite.Update(gameTime, m_pos +  new Vector2(8,0));
+            m_sprite.Update(gameTime, m_pos + new Vector2(8, 0), Content);
             //m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
 
             // bullets!

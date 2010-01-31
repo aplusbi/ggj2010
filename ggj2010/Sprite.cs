@@ -42,6 +42,8 @@ namespace ggj2010
 	    float totalTime;
         bool dyingAnimationIsDone;
         public Color m_color;
+        ContentManager Content;
+        SoundEffect soundEffect;
 
         public Sprite()
 	    {
@@ -62,10 +64,12 @@ namespace ggj2010
             SpriteTexture.Play();
             spriteSheet = theContent.Load<Texture2D>(assetName);
             origin = new Vector2(squareSize / 2, 0);
+            soundEffect = theContent.Load<SoundEffect>("kaboom");
         }
 
-        public void Update(GameTime gameTime, Vector2 m_pos)
+        public void Update(GameTime gameTime, Vector2 m_pos, ContentManager Content2)
         {
+            Content = Content2;
             if (currentAnimation == Animation.AnimationType.NONE)
                 return;
             //m_position += m_velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -125,6 +129,19 @@ namespace ggj2010
                 // trigger animation to play, by specifying enum AnimationType
                 currentAnimation = animationToPlay;
                 AnimationsList[(int)currentAnimation].PlayAnimation();
+
+                switch (currentAnimation)
+                {
+                    case Animation.AnimationType.DYING: break;
+                    case Animation.AnimationType.RUNNING: soundEffect = Content.Load<SoundEffect>("kaboom2"); break;
+                    case Animation.AnimationType.CLIMBING: soundEffect = Content.Load<SoundEffect>("kaboom2"); break;
+                    case Animation.AnimationType.IDLING: soundEffect = Content.Load<SoundEffect>("kaboom2"); break;
+                    case Animation.AnimationType.PANTING: soundEffect = Content.Load<SoundEffect>("kaboom2"); break;
+                    case Animation.AnimationType.SHOOTING: soundEffect = Content.Load<SoundEffect>("gun_shoot_02"); break;
+                    case Animation.AnimationType.SPAWNING: break;
+                    default: break;
+                }
+                soundEffect.Play();
             }
         }
 
