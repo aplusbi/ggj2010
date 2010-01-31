@@ -30,7 +30,7 @@ namespace ggj2010
             new Vector2(80, 16),
             new Vector2(944, 686),
             new Vector2(944, 16) };
-        Vector2 m_gravity = new Vector2(0.0f, 120.0f);
+        Vector2 m_gravity = new Vector2(0.0f, 180.0f);
         double m_xspeed;
         double m_yspeed;
         LinkedList<Bullet> m_bullets = new LinkedList<Bullet>();

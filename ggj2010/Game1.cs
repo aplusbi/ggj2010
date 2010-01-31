@@ -30,7 +30,7 @@ namespace ggj2010
         Player[] players;
         Screens screens;
         int[] m_score = {0, 0, 0, 0};
-        string[] m_levels = {@"Content\map1.txt", @"Content\map2.txt"};
+        string[] m_levels = {@"Content\map1.txt", @"Content\map2.txt", @"Content\map3.txt"};
         int m_currentlevel = 0;
         Random rng = new Random();
         bool spacebar = false;
