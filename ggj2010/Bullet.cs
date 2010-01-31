@@ -18,7 +18,7 @@ namespace ggj2010
     {
         private Texture2D m_sprite;
         private bool m_valid = true;
-        PlayerIndex m_player;
+        public PlayerIndex m_player;
         public Bullet(ContentManager theContent, floatRectangle r, Vector2 v, PlayerIndex player)
         {
             m_player = player;
@@ -46,6 +46,10 @@ namespace ggj2010
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(m_sprite, new Vector2(m_rect.X, m_rect.Y), Color.Red);
+        }
+        public void Remove()
+        {
+            m_valid = false;
         }
     }
 }

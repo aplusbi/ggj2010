@@ -127,6 +127,19 @@ namespace ggj2010
             for (int i = 0; i < 4; i++)
             {
                 players[i].Update(gameTime, this.map, i);
+
+                // bullet collisions
+                LinkedList<Bullet> bullets = players[i].GetBullets();
+                foreach (Bullet b in bullets)
+                {
+                    foreach (Player p in players)
+                    {
+                        if (b.m_player != (PlayerIndex)i && b.Colliding(p))
+                        {
+                            b.Remove();
+                        }
+                    }
+                }
             }
             base.Update(gameTime);
         }

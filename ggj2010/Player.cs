@@ -152,5 +152,9 @@ namespace ggj2010
                 b.Draw(spriteBatch);
             }
         }
+        public LinkedList<Bullet> GetBullets()
+        {
+            return m_bullets;
+        }
     }
 }
