@@ -41,6 +41,8 @@ namespace ggj2010
         private int m_team;
         private int m_health;
         public double m_vibrate = 1.0f;
+        ContentManager Content;
+        SoundEffect soundEffect;
 
         public Player(Random rng)
         {
@@ -91,10 +93,15 @@ namespace ggj2010
             m_atype = Animation.AnimationType.IDLING;
             m_pos = m_origin[new Random().Next(4)];
             m_health = 3;
+//            soundEffect = Content.Load<SoundEffect>("damage_01");
+//            soundEffect.Play();
+//            soundEffect = Content.Load<SoundEffect>("power_up_01");
+//            soundEffect.Play();
         }
 
-        public void Update(GameTime gameTime, TileMap map, ContentManager Content)
+        public void Update(GameTime gameTime, TileMap map, ContentManager Content2)
         {
+            Content = Content2;
             m_vibrate -= gameTime.ElapsedGameTime.TotalSeconds;
             if (m_vibrate < 0)
                 GamePad.SetVibration(m_index, 0, 0);
@@ -188,7 +195,7 @@ namespace ggj2010
                 //dyingAnimationIsDone = true;
             }
 
-            m_sprite.Update(gameTime, m_pos + new Vector2(8, 0), Content);
+            m_sprite.Update(gameTime, m_pos + new Vector2(8, 0), Content2);
             //m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); // start in "idling animation" state
 
             // bullets!
@@ -249,6 +256,8 @@ namespace ggj2010
                 Die();
                 return true;
             }
+            soundEffect = Content.Load<SoundEffect>("damage");
+            soundEffect.Play();
             return false;
         }
         public void Die()

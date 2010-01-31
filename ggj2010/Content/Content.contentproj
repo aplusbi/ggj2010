@@ -189,11 +189,6 @@
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-    <Compile Include="hum_1000.wav">
-      <Name>hum_1000</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
     <Compile Include="power_up_01.wav">
       <Name>power_up_01</Name>
       <Importer>WavImporter</Importer>
@@ -251,6 +246,20 @@
   <ItemGroup>
     <Compile Include="kaboom.wav">
       <Name>kaboom</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="room_tone.mp3">
+      <Name>room_tone</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="damage_01.wav">
+      <Name>damage_01</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>

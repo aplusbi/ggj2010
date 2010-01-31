@@ -37,6 +37,7 @@ namespace ggj2010
         bool spacebar = false;
         Timer m_leveltime;
         double m_delaytime;
+        Song mySong;
 
         AudioEngine audioEngine;
         WaveBank waveBank;
@@ -71,7 +72,7 @@ namespace ggj2010
             base.Initialize();
 
             ContentManager contentManager = new ContentManager(this.Services, @"Content\");
-            soundEffect = contentManager.Load<SoundEffect>(soundName);
+            //soundEffect = contentManager.Load<SoundEffect>(soundName);
             //soundEffect.Play();
             //soundBank.PlayCue("test_cue"); 
         }
@@ -85,6 +86,7 @@ namespace ggj2010
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             screens.LoadContent(Content);
+            mySong = Content.Load<Song>("room_tone");
             //LoadLevel(m_currentlevel);
             // TODO: use this.Content to load your game content here
         }
@@ -179,6 +181,8 @@ namespace ggj2010
                         m_state = State.GAME;
                         m_delaytime = 0.0;
                         LoadLevel(m_currentlevel);
+                        MediaPlayer.Play(mySong);
+                        MediaPlayer.Volume = 1.0f;
                     }
                     m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
                     break;
@@ -222,9 +226,17 @@ namespace ggj2010
                                     {
                                         //m_score[(int)p.m_index]--;
                                         if (b.GetTeam() == p.GetTeam())
+                                        {
                                             m_score[(int)b.m_player]--;
+                                            soundEffect = Content.Load<SoundEffect>("ui_beep_01");
+                                            soundEffect.Play();
+                                        }
                                         else
+                                        {
                                             m_score[(int)b.m_player]++;
+                                            soundEffect = Content.Load<SoundEffect>("ui_beep_02");
+                                            soundEffect.Play();
+                                        }
                                     }
                                     b.Remove();
                                 }

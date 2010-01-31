@@ -21,7 +21,6 @@ Content\game_start.xnb
 Content\gun_shoot_01.xnb
 Content\gun_shoot_02.xnb
 Content\heartbeat.xnb
-Content\hum_1000.xnb
 Content\power_up_01.xnb
 Content\respawn_01.xnb
 Content\respawn_01rev.xnb
@@ -32,7 +31,10 @@ Content\ui_beep_01.xnb
 Content\ui_beep_02.xnb
 Content\kaboom2.xnb
 Content\kaboom.xnb
+Content\room_tone.xnb
+Content\damage_01.xnb
 Content\james-bond.wma
+Content\room_tone.wma
 Content\map.txt
 Content\map1.txt
 Content\map2.txt

@@ -87,16 +87,6 @@ namespace ggj2010
 
         public void Draw(SpriteBatch spriteBatch, bool flip)
         {
- //           spriteBatch.Draw(m_texture, m_position, m_rect, Color.White, m_angle, Vector2.Zero, m_scale, SpriteEffects.None, 0);
-            //spriteBatch.Draw(m_tiles[m_map[i, j]].m_texture, pos, Color.White);
-
-            //spriteBatch.Draw(myTexture, shipPos, subRectFrame, Color.White,
-            //    Rotation, Origin, Scale, SpriteEffects.None, Depth);
-
-            //           SpriteTexture.DrawFrame(spriteBatch, shipPos);
-            //origin = new Vector2(0.0f, 0.0f);
-            //spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, Color.White);
-
             if (flip)
             {
                 spriteBatch.Draw(spriteSheet, shipPos, subRectFrame, m_color, 0.0f, origin,
