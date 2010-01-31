@@ -86,6 +86,10 @@ namespace ggj2010
         //Test player = new Test();
         Player[] players;
 
+        AudioEngine audioEngine;
+        WaveBank waveBank;
+        SoundBank soundBank;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -95,10 +99,6 @@ namespace ggj2010
             {
                 players[i] = new Player();
             }
-//            players[0] = new Player();
-//            players[1] = new Player();
-//            players[2] = new Player();
-//            players[3] = new Player();
         }
 
         /// <summary>
@@ -115,7 +115,12 @@ namespace ggj2010
             // TODO: Add your initialization logic here
             viewport = GraphicsDevice.Viewport;
 
+//            audioEngine = new AudioEngine("Content\\Audio\\GGJ_2010.xgs");
+//            waveBank = new WaveBank(audioEngine, "Content\\Audio\\Wave Bank.xwb");
+//            soundBank = new SoundBank(audioEngine, "Content\\Audio\\Sound Bank.xsb");
+
             base.Initialize();
+
             ContentManager contentManager = new ContentManager(this.Services, @"Content\");
             soundEffect = contentManager.Load<SoundEffect>(soundName);
             //soundEffect.Play();
@@ -140,11 +145,10 @@ namespace ggj2010
             map.LoadTiles(Content, tiles);
             map.LoadContent(Content, @"Content\map1.txt");
 
-            players[0].LoadContent(Content, "character_frames", 64);
-            players[1].LoadContent(Content, "character_frames", 64);
-            players[2].LoadContent(Content, "character_frames", 64);
-            players[3].LoadContent(Content, "character_frames", 64);
-
+            for (int i = 0; i < 4; i++)
+            {
+                players[i].LoadContent(Content, "character_frames", 64);
+            }
         }
 
         /// <summary>
@@ -176,10 +180,10 @@ namespace ggj2010
             //    vibration = 0.0f;
             //GamePad.SetVibration(PlayerIndex.One, 0.0f, vibration);
 
-
-            // TODO: Add your update logic here
-            players[0].Update(gameTime, this.map);
-            //player.Update(gameTime, this.map);
+            for (int i = 0; i < 4; i++)
+            {
+                players[i].Update(gameTime, this.map, i);
+            }
             base.Update(gameTime);
         }
 
@@ -192,7 +196,10 @@ namespace ggj2010
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             map.Draw(spriteBatch);
-            players[0].Draw(spriteBatch);
+            for (int i = 0; i < 4; i++)
+            {
+                players[i].Draw(spriteBatch);
+            }
             //player.Draw(spriteBatch);
             spriteBatch.End();
 

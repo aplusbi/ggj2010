@@ -62,7 +62,7 @@ namespace ggj2010
             m_speed = 240.0f;
         }
 
-        public void Update(GameTime gameTime, TileMap map)
+        public void Update(GameTime gameTime, TileMap map, int index)
         {
             m_rect.X = m_pos.X;
             m_rect.Y = m_pos.Y;
@@ -70,7 +70,7 @@ namespace ggj2010
 
             bool onLadder = map.OnLadder(this, out ladder_x, out ladder_y);
 
-            this.m_dir.X = GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X;
+            this.m_dir.X = GamePad.GetState((PlayerIndex)index).ThumbSticks.Left.X;
             if (onLadder)
             {
                 this.m_dir.Y = -GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.Y;
