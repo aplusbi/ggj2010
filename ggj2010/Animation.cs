@@ -17,7 +17,7 @@ namespace ggj2010
         private int lastFrame;
         private bool loopingType;
 
-        public enum AnimationType { DYING, RUNNING, CLIMBING, IDLING, PANTING, SHOOTING, SPAWNING, NONE }; 
+        public enum AnimationType { NONE, RUNNING, CLIMBING, IDLING, PANTING, SHOOTING, DYING, SPAWNING }; 
 
         public Animation(int numFrames, float numSecondsPerFrame, bool isLooping)
         {
@@ -36,15 +36,8 @@ namespace ggj2010
                 currentFrame = (int)Math.Ceiling(currentTime / secondsPerFrame);
                 if (currentFrame > lastFrame)
                 {
-                    if (loopingType == false)
-                    {
-                        currentFrame = 0;
-                    }
-                    else
-                    {
-                        currentFrame = 1;
-                    }
-                    currentTime = 0.0f;
+                    if (loopingType == false) ResetAnimation();
+                    else PlayAnimation();
                 }
             }
             return currentFrame;

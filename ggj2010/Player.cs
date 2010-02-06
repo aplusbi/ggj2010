@@ -22,7 +22,7 @@ namespace ggj2010
 
         Vector2 m_vel;
         Vector2 m_dir = new Vector2(0, 0);
-        Vector2 m_bulletDir = new Vector2(1.0f, 0);
+        Vector2 m_bulletDir = new Vector2(2.0f, 0);
         double m_bulletWait = 0.0f;
         Vector2 m_pos;
         Vector2[] m_origin = {
@@ -41,21 +41,23 @@ namespace ggj2010
         private int m_team;
         private int m_health;
         public double m_vibrate = 1.0f;
+        private bool dyingAnimationIsDone = false;
         ContentManager Content;
         SoundEffect soundEffect;
 
         public Player(Random rng)
         {
             m_sprite = new Sprite();
-            m_sprite.AddAnimation(Animation.AnimationType.DYING, 1, 0.1f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.NONE, 1, 0.1f, false);
             m_sprite.AddAnimation(Animation.AnimationType.RUNNING, 5, 0.05f, true);
             m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, 8, 0.1f, true);
             m_sprite.AddAnimation(Animation.AnimationType.IDLING, 1, 0.1f, true);
             m_sprite.AddAnimation(Animation.AnimationType.PANTING, 4, 0.3f, true);
             m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, 2, 0.1f, false);
-            m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, 2, 0.1f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.DYING, 3, 0.2f, false);
+            m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, 2, 0.1f, false);
             m_team = rng.Next(2);
-            m_health = 3;
+            m_health = 1;
         }
         public int GetTeam()
         {
@@ -92,7 +94,7 @@ namespace ggj2010
         {
             m_atype = Animation.AnimationType.IDLING;
             m_pos = m_origin[new Random().Next(4)];
-            m_health = 3;
+            m_health = 1;
 //            soundEffect = Content.Load<SoundEffect>("damage_01");
 //            soundEffect.Play();
 //            soundEffect = Content.Load<SoundEffect>("power_up_01");
@@ -189,10 +191,16 @@ namespace ggj2010
                 m_atype = Animation.AnimationType.IDLING; 
             }
 
-            // if dying animation completed, trip flag
+            if (dyingAnimationIsDone)
+            {
+                dyingAnimationIsDone = false;
+                Respawn();
+            }
+
+            // if dying animation completed, respawn
             if (m_atype == Animation.AnimationType.DYING && m_sprite.IsCurrentAnimationDone() == true)
             {
-                //dyingAnimationIsDone = true;
+                dyingAnimationIsDone = true;
             }
 
             m_sprite.Update(gameTime, m_pos + new Vector2(8, 0), Content2);
@@ -202,7 +210,7 @@ namespace ggj2010
             m_bulletWait -= gameTime.ElapsedGameTime.TotalSeconds;
             if (m_bulletWait < 0) m_bulletWait = 0;
             if(GamePad.GetState(m_index).Buttons.A == ButtonState.Pressed
-                && m_bullets.Count() < 5 && m_bulletWait <= 0)
+                && m_bullets.Count() < 1 && m_bulletWait <= 0)
             {
                 m_atype = Animation.AnimationType.SHOOTING;
                 m_bulletWait = 0.5f;
@@ -226,13 +234,13 @@ namespace ggj2010
 
             switch (m_atype)
             {
-                case Animation.AnimationType.DYING: break;
+                case Animation.AnimationType.DYING: m_sprite.PlayAnimation(Animation.AnimationType.DYING); break;
                 case Animation.AnimationType.RUNNING: m_sprite.PlayAnimation(Animation.AnimationType.RUNNING); break;
                 case Animation.AnimationType.CLIMBING: m_sprite.PlayAnimation(Animation.AnimationType.CLIMBING); break;
                 case Animation.AnimationType.IDLING: m_sprite.PlayAnimation(Animation.AnimationType.IDLING); break;
                 case Animation.AnimationType.PANTING: m_sprite.PlayAnimation(Animation.AnimationType.PANTING); break;
                 case Animation.AnimationType.SHOOTING: m_sprite.PlayAnimation(Animation.AnimationType.SHOOTING); break;
-                case Animation.AnimationType.SPAWNING: break;
+                case Animation.AnimationType.SPAWNING: m_sprite.PlayAnimation(Animation.AnimationType.SPAWNING); break;
                 default: break;
             }
         }
@@ -251,19 +259,17 @@ namespace ggj2010
         }
         public bool Shot()
         {
-            if (--m_health == 0)
-            {
-                Die();
-                return true;
-            }
-            soundEffect = Content.Load<SoundEffect>("damage");
-            soundEffect.Play();
-            return false;
+            m_health--;
+            if (m_health <= 0) Die();
+            //soundEffect = Content.Load<SoundEffect>("damage");
+            //soundEffect.Play();
+            //return false;
+            return true;
         }
         public void Die()
         {
             Respawn();
-            //m_atype = Animation.AnimationType.DYING;
+//            m_atype = Animation.AnimationType.DYING;
         }
     }
 }
