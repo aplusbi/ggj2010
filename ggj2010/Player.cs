@@ -50,8 +50,8 @@ namespace ggj2010
             m_sprite = new Sprite();
             m_sprite.AddAnimation(Animation.AnimationType.NONE, 1, 0.1f, false);
             m_sprite.AddAnimation(Animation.AnimationType.RUNNING, 5, 0.05f, true);
-            m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, 8, 0.1f, true);
-            m_sprite.AddAnimation(Animation.AnimationType.IDLING, 1, 0.1f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.CLIMBING, 8, 0.03f, true);
+            m_sprite.AddAnimation(Animation.AnimationType.IDLING, 4, 0.1f, true);
             m_sprite.AddAnimation(Animation.AnimationType.PANTING, 4, 0.3f, true);
             m_sprite.AddAnimation(Animation.AnimationType.SHOOTING, 2, 0.1f, false);
             m_sprite.AddAnimation(Animation.AnimationType.DYING, 3, 0.2f, false);
@@ -215,7 +215,7 @@ namespace ggj2010
                 m_atype = Animation.AnimationType.SHOOTING;
                 m_bulletWait = 0.5f;
                  m_bullets.AddLast(new Bullet(m_content,
-                    new floatRectangle(m_pos.X + 8, m_pos.Y + 32, 8, 8), 
+                    new floatRectangle(m_pos.X + 8, m_pos.Y + 24, 8, 8), 
                     m_bulletDir * 320.0f, 
                     m_index, m_team));
             }
