@@ -38,6 +38,7 @@ namespace ggj2010
         Timer m_leveltime;
         double m_delaytime;
         Song mySong;
+        bool fullscreen = false;
 
         AudioEngine audioEngine;
         WaveBank waveBank;
@@ -61,6 +62,9 @@ namespace ggj2010
         {
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 800;
+ //           this.graphics.PreferredBackBufferWidth = 1280;
+ //           this.graphics.PreferredBackBufferHeight = 800;
+            graphics.IsFullScreen = fullscreen;
             graphics.ApplyChanges();
             // TODO: Add your initialization logic here
             viewport = GraphicsDevice.Viewport;
@@ -131,20 +135,27 @@ namespace ggj2010
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
-                || GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
-                || GamePad.GetState(PlayerIndex.Three).Buttons.Back == ButtonState.Pressed
-                || GamePad.GetState(PlayerIndex.Four).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-            else if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed
-                || GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed
-                || GamePad.GetState(PlayerIndex.Three).Buttons.Start == ButtonState.Pressed
-                || GamePad.GetState(PlayerIndex.Four).Buttons.Start == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.F))
             {
-                m_delaytime = 0;
-                m_state = State.TITLE;
+                fullscreen = !fullscreen;
+                graphics.IsFullScreen = fullscreen;
+                graphics.ApplyChanges();
             }
+
+            // Allows the game to exit
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+            //    || GamePad.GetState(PlayerIndex.Two).Buttons.Back == ButtonState.Pressed
+            //    || GamePad.GetState(PlayerIndex.Three).Buttons.Back == ButtonState.Pressed
+            //    || GamePad.GetState(PlayerIndex.Four).Buttons.Back == ButtonState.Pressed)
+            //    this.Exit();
+            //else if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed
+            //    || GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed
+            //    || GamePad.GetState(PlayerIndex.Three).Buttons.Start == ButtonState.Pressed
+            //    || GamePad.GetState(PlayerIndex.Four).Buttons.Start == ButtonState.Pressed)
+            //{
+            //    m_delaytime = 0;
+            //    m_state = State.TITLE;
+            //}
             switch(m_state)
             {
                 case State.TITLE:
