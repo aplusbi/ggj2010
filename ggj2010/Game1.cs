@@ -61,7 +61,7 @@ namespace ggj2010
         protected override void Initialize()
         {
             graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferHeight = 768;
  //           this.graphics.PreferredBackBufferWidth = 1280;
  //           this.graphics.PreferredBackBufferHeight = 800;
             graphics.IsFullScreen = fullscreen;
