@@ -112,7 +112,7 @@ namespace ggj2010
                     if (m_tiles[m_map[i, j]].m_type == Tile.TileType.LADDER)
                     {
                         x = i * m_tileWidth;
-                        y = i * m_tileHeight;
+                        y = j * m_tileHeight;
                         return true;
                     }
                 }

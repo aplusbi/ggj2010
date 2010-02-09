@@ -162,7 +162,8 @@ namespace ggj2010
                     if ((m_delaytime > 1) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
-                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
+                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed
+                        || Keyboard.GetState().IsKeyDown(Keys.Space)))
                     {
                         m_state = State.INTRO;
                         m_delaytime = 0.0;
@@ -173,7 +174,8 @@ namespace ggj2010
                     if ((m_delaytime > 1) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
-                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
+                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed
+                        || Keyboard.GetState().IsKeyDown(Keys.Space)))
                     {
                         m_state = State.RULES;
                         m_delaytime = 0.0;
@@ -184,7 +186,8 @@ namespace ggj2010
                     if ((m_delaytime > 3) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
-                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
+                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed
+                        || Keyboard.GetState().IsKeyDown(Keys.Space)))
                     {
                         //string output = "Press A to continue";
                         //Vector2 outputPos = new Vector2(330, 630);
@@ -201,7 +204,8 @@ namespace ggj2010
                     if ((m_delaytime > 5) && (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed
                         || GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed
-                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed))
+                        || GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed
+                        || Keyboard.GetState().IsKeyDown(Keys.Space)))
                     {
                         m_state = State.INTRO;
                         m_delaytime = 0.0;
@@ -209,9 +213,9 @@ namespace ggj2010
                     m_delaytime += gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case State.GAME:
-                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                    if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                         spacebar = true;
-                    if (spacebar && Keyboard.GetState().IsKeyUp(Keys.Space) || m_leveltime.GetTime() < 0)
+                    if (spacebar && Keyboard.GetState().IsKeyUp(Keys.Enter) || m_leveltime.GetTime() < 0)
                     {
                         spacebar = false;
                         if (++m_currentlevel >= m_levels.Count())

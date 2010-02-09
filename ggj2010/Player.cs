@@ -114,9 +114,31 @@ namespace ggj2010
             bool onLadder = map.OnLadder(this, out ladder_x, out ladder_y);
 
             this.m_dir.X = GamePad.GetState(m_index).ThumbSticks.Left.X;
+            if(m_index == PlayerIndex.One)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    m_dir.X = -1;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    m_dir.X = 1;
+                }
+            }
             if (onLadder)
             {
                 this.m_dir.Y = -GamePad.GetState(m_index).ThumbSticks.Left.Y;
+                if (m_index == PlayerIndex.One)
+                {
+                    if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    {
+                        m_dir.Y = -1;
+                    } 
+                    else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    {
+                        m_dir.Y = 1;
+                    }
+                }
                 if (Math.Abs(m_dir.Y) > Math.Abs(m_dir.X))
                     m_pos.X = (float)ladder_x;
             }
@@ -151,6 +173,17 @@ namespace ggj2010
 
             m_pos.X += m_vec.X;
             m_pos.Y += m_vec.Y;
+
+            if (onLadder && Math.Abs(m_dir.Y) > Math.Abs(m_dir.X))
+            {
+                m_rect.X = m_pos.X;
+                m_rect.Y = m_pos.Y;
+                int dummyx, dummyy;
+                if (!map.OnLadder(this, out dummyx, out dummyy))
+                {
+                    m_pos.Y = ladder_y - m_rect.Height;
+                }
+            }
 
             if (m_vec.X > 0)
             {
@@ -209,7 +242,7 @@ namespace ggj2010
             // bullets!
             m_bulletWait -= gameTime.ElapsedGameTime.TotalSeconds;
             if (m_bulletWait < 0) m_bulletWait = 0;
-            if(GamePad.GetState(m_index).Buttons.A == ButtonState.Pressed
+            if(GamePad.GetState(m_index).Buttons.A == ButtonState.Pressed || (m_index == PlayerIndex.One && Keyboard.GetState().IsKeyDown(Keys.Space))
                 && m_bullets.Count() < 1 && m_bulletWait <= 0)
             {
                 m_atype = Animation.AnimationType.SHOOTING;
