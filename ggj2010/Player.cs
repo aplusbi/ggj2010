@@ -44,8 +44,9 @@ namespace ggj2010
         private bool dyingAnimationIsDone = false;
         ContentManager Content;
         SoundEffect soundEffect;
+        Keys[] m_controls;
 
-        public Player(Random rng)
+        public Player(Random rng, Keys[] controls)
         {
             m_sprite = new Sprite();
             m_sprite.AddAnimation(Animation.AnimationType.NONE, 1, 0.1f, false);
@@ -58,6 +59,7 @@ namespace ggj2010
             m_sprite.AddAnimation(Animation.AnimationType.SPAWNING, 2, 0.1f, false);
             m_team = rng.Next(2);
             m_health = 1;
+            m_controls = controls;
         }
         public int GetTeam()
         {
@@ -114,30 +116,24 @@ namespace ggj2010
             bool onLadder = map.OnLadder(this, out ladder_x, out ladder_y);
 
             this.m_dir.X = GamePad.GetState(m_index).ThumbSticks.Left.X;
-            if(m_index == PlayerIndex.One)
+            if (Keyboard.GetState().IsKeyDown(m_controls[0]))
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    m_dir.X = -1;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    m_dir.X = 1;
-                }
+                m_dir.X = -1;
+            }
+            else if (Keyboard.GetState().IsKeyDown(m_controls[1]))
+            {
+                m_dir.X = 1;
             }
             if (onLadder)
             {
                 this.m_dir.Y = -GamePad.GetState(m_index).ThumbSticks.Left.Y;
-                if (m_index == PlayerIndex.One)
+                if (Keyboard.GetState().IsKeyDown(m_controls[2]))
                 {
-                    if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                    {
-                        m_dir.Y = -1;
-                    } 
-                    else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                    {
-                        m_dir.Y = 1;
-                    }
+                    m_dir.Y = -1;
+                } 
+                else if (Keyboard.GetState().IsKeyDown(m_controls[3]))
+                {
+                    m_dir.Y = 1;
                 }
                 if (Math.Abs(m_dir.Y) > Math.Abs(m_dir.X))
                     m_pos.X = (float)ladder_x;
@@ -242,7 +238,7 @@ namespace ggj2010
             // bullets!
             m_bulletWait -= gameTime.ElapsedGameTime.TotalSeconds;
             if (m_bulletWait < 0) m_bulletWait = 0;
-            if(GamePad.GetState(m_index).Buttons.A == ButtonState.Pressed || (m_index == PlayerIndex.One && Keyboard.GetState().IsKeyDown(Keys.Space))
+            if(GamePad.GetState(m_index).Buttons.A == ButtonState.Pressed || (Keyboard.GetState().IsKeyDown(m_controls[4]))
                 && m_bullets.Count() < 1 && m_bulletWait <= 0)
             {
                 m_atype = Animation.AnimationType.SHOOTING;

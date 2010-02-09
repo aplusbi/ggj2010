@@ -96,10 +96,14 @@ namespace ggj2010
         }
         public void LoadLevel(int level)
         {
+            Keys[][] controls = { new Keys[] {Keys.Left, Keys.Right, Keys.Up, Keys.Down, Keys.RightControl},
+                                   new Keys[] {Keys.A, Keys.D, Keys.W, Keys.S, Keys.LeftControl},
+                                   new Keys[] {Keys.H, Keys.H, Keys.H, Keys.H, Keys.H},
+                                   new Keys[] {Keys.H, Keys.H, Keys.H, Keys.H, Keys.H} };
             players = new Player[4];
             for (int i = 0; i < 4; i++)
             {
-                players[i] = new Player(rng);
+                players[i] = new Player(rng, controls[i]);
             }
             TilePair[] tiles = {
                 new TilePair("blacksquare16x16", TileMap.Tile.TileType.NONE),
