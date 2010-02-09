@@ -238,7 +238,7 @@ namespace ggj2010
             // bullets!
             m_bulletWait -= gameTime.ElapsedGameTime.TotalSeconds;
             if (m_bulletWait < 0) m_bulletWait = 0;
-            if(GamePad.GetState(m_index).Buttons.A == ButtonState.Pressed || (Keyboard.GetState().IsKeyDown(m_controls[4]))
+            if((GamePad.GetState(m_index).Buttons.A == ButtonState.Pressed || (Keyboard.GetState().IsKeyDown(m_controls[4])))
                 && m_bullets.Count() < 1 && m_bulletWait <= 0)
             {
                 m_atype = Animation.AnimationType.SHOOTING;
